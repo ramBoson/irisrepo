@@ -12,7 +12,7 @@ const Adminviewdb=()=> {
   const [getresponse, setresponse] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {      
-      const res = await axios.get(`http://52.15.243.18:42101/irisapi/v1/users`)
+      const res = await axios.get(`http://18.116.51.140:42101/irisapi/v1/users`)
       setresponse(res.data)
       
     };
@@ -31,7 +31,7 @@ const Adminviewdb=()=> {
     //     console.log("Error",error);
     //   });            
     // }
-    const dbupdatecall=(userkey,algoAddress,creationTime,accountType,profileName,twitterName,profileURL)=>{
+    const dbupdatecall=(userkey,algoAddress,creationTime,twitterName,profileName,profileURL,accountType)=>{
       console.log("a",userkey)
       console.log("b",algoAddress)
       console.log("c",creationTime)
@@ -39,6 +39,17 @@ const Adminviewdb=()=> {
       console.log("e",profileName)
       console.log("f",twitterName)
       console.log("g",profileURL)
+      const posts= {
+        "userKey": userkey,
+        "algoAddress": algoAddress,
+        "creationTime": creationTime,
+        "accountType": accountType,
+        "profileName": profileName,
+        "twitterName": twitterName,
+        "profileURL": "approved"
+    }
+    
+    console.log("postsjson",posts)
       //alert("dbupdatecall")
       // const posts = {
       //   "ipAddress": this.state.setimagename,
@@ -50,18 +61,10 @@ const Adminviewdb=()=> {
       //   "profileName" :document.getElementById("name").value,                
       //   "accountType" :"pending"
       // }
-     const posts= {
-        "userKey": userkey,
-        "algoAddress": algoAddress,
-        "creationTime": creationTime,
-        "accountType": "approved",
-        "profileName": profileName,
-        "twitterName": twitterName,
-        "profileURL": profileURL
-    }
-    
      
-    axios.post(`http://52.15.243.18:42101/irisapi/v1/users`,posts)
+  
+     
+    axios.post(`http://18.116.51.140:42101/irisapi/v1/users`,posts)
     .then(res => {
       console.log(res.data)
       window.location.reload();
@@ -76,25 +79,29 @@ const Adminviewdb=()=> {
           <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
+                      <th>USERKEY</th>
                         <th>Name</th>
                         <th>DOB</th>
                         <th>ADDRESS</th>
                         <th>PHONENUMBER</th>
                         <th>IMAGE</th>
+                        <th>TYPE</th>
                         <th>STATUS</th>
                         <th>APPROVE</th>
                     </tr>
                 </thead>
                 <tbody>
+                
                     {getresponse && getresponse.map(user =>
                         <tr key={user.userKey}>
-                            <td>{user.profileName}</td>
                             <td>{user.userKey}</td>
+                            <td>{user.profileName}</td>
+                            <td>{user.creationTime}</td>
                             <td>{user.algoAddress.slice(0,10)}....</td>                            
                             <td>{user.twitterName}</td>
-                            <td>{user.profileURL}</td>
                             <td>{user.accountType}</td>
-                            <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall(user.userkey,user.algoAddress,user.creationTime,user.accountType,user.profileName,user.twitterName,user.profileURL)}>CLICK</td>
+                            <td>{user.profileURL}</td>
+                            <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall(user.userkey,user.algoAddress,user.creationTime,user.twitterName,user.profileName,user.profileURL,user.accountType)}>CLICK</td>
                         </tr>
                     )}
                 </tbody>

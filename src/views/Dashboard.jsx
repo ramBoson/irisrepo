@@ -149,16 +149,26 @@ class Dashboard extends Component {
             console.log(this.state.setIpfsHash)
             console.log(this.state.setImg)
             console.log(this.state.setimagename)
-                       
+
+          //   {
+          //     "userKey": "1",
+          //     "algoAddress": "address11234567891011address11234567891011address11234567891011address11234567891011",
+          //     "creationTime": "2021-11-21 03:38:04",
+          //     "accountType": "accountType1",
+          //     "profileName": "profileName1",
+          //     "twitterName": "twitterName1",
+          //     "profileURL": "ipfsHexUrl1 Updated"
+          // }
+          // "profileName" :document.getElementById("name").value,                
+          //document.getElementById("address").value
             const posts = {
-                "ipAddress": this.state.setimagename,
+                "userKey": this.state.setimagename,
                 "algoAddress": localStorage.getItem("wallet"),
-                "networkType": document.getElementById("dob").value,
-                "walletType": document.getElementById("address").value,
-                "twitterName": document.getElementById("email").value,
-                "profileURL": this.state.setIpfsHash,
-                "profileName" :document.getElementById("name").value,                
-                "accountType" :"pending"
+                "creationTime": document.getElementById("dob").value,
+                "accountType": document.getElementById("name").value,
+                "profileName": this.state.setimagename,
+                "twitterName": this.state.setIpfsHash,                
+                "profileURL" :"pending"
               }
               //document.getElementById("phonenumber").value
               
@@ -172,7 +182,7 @@ class Dashboard extends Component {
             //     "profileName" :"hello",
             //     "accountType" :"hello",
             //   }
-              axios.post('http://52.15.243.18:42101/irisapi/v1/users', posts)
+              axios.post('http://18.116.51.140:42101/irisapi/v1/users', posts)
               .then(res =>{
                   if(res.data['result'] === 'User Create / Update Failed !'){
                     console.log(res.data)

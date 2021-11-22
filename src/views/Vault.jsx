@@ -22,6 +22,22 @@ const Vault = () => {
     const nftWorkspacePath = __dirname + '/workspace';
     const bs58 = require("bs58");
     const [posts, setPosts] = useState([]);
+    console.log("posts",posts)
+    useEffect(() => {
+        const fetchPosts = async () => {          
+            if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined){
+
+                alert("please connect your wallet")
+            }
+            else{
+                //const res = await axios.get(`http://18.220.0.247:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
+                const res = await axios.get(`http://18.116.51.140:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
+                setPosts(res.data);          
+            }          
+        };    
+        fetchPosts();
+      }, []);
+
     let arc3MetadataJSON={
         "name": "",
         "description": "",
@@ -38,22 +54,7 @@ const Vault = () => {
             "file_url_mimetype": "",
         }}
     
-    console.log("posts",posts)
-    useEffect(() => {
-        const fetchPosts = async () => {          
-            if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined){
-
-                alert("please connect your wallet")
-            }
-            else{
-                //const res = await axios.get(`http://18.220.0.247:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-                const res = await axios.get(`http://52.15.243.18:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-                setPosts(res.data);          
-            }          
-        };    
-        fetchPosts();
-      }, []);
-
+    
     // window.onbeforeunload = () => {
 	// 	sessionStorage.removeItem('wallet');
 	//   }
@@ -98,15 +99,15 @@ const Vault = () => {
         const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
             pinata.testAuthentication().then((result) => {            
             console.log(result);  
-            let ge=posts['profileURL'];
-            console.log("ipfsHash",posts['profileURL']);
-            console.log("ipfsname",posts['ipAddress']);            
+            let ge=posts['twitterName'];
+            console.log("ipfsHash",posts['twitterName']);
+            console.log("ipfsname",posts['profileName']);            
                     const body = {
                         message: ge
                     };
                     const options = {
                         pinataMetadata: {
-                            name: posts['ipAddress'],
+                            name: posts['profileName'],
                             keyvalues: {
                                 customKey: 'customValue',
                                 customKey2: 'customValue2'
@@ -120,7 +121,7 @@ const Vault = () => {
                         console.log(result);
                         console.log("jsonresult")                      
                         let fileCat = 'image'      
-        let nftFileNameSplit = posts['ipAddress'].split('.')
+        let nftFileNameSplit = posts['profileName'].split('.')
         let fileExt = nftFileNameSplit[1];      
         let kvProperties = {
           "url": nftFileNameSplit[0],
@@ -132,12 +133,12 @@ const Vault = () => {
           "file_url_mimetype": `image/${fileExt}`,
         };
                         let metadata = arc3MetadataJSON;      
-                        let integrity = convertIpfsCidV0ToByte32(posts['profileURL'])
+                        let integrity = convertIpfsCidV0ToByte32(posts['twitterName'])
                         metadata.properties = properties;
-                        metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['profileURL']}`;
+                        metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['twitterName']}`;
                         metadata.properties.file_url_integrity = `${integrity.base64}`;
-                        metadata.name = `${posts['profileName']}@arc3`;
-                        metadata.description = posts['profileName'];
+                        metadata.name = `${posts['accountType']}@arc3`;
+                        metadata.description = posts['accountType'];
                         metadata.image = `ipfs://${posts['profileURL']}`;
                         metadata.image_integrity = `${integrity.base64}`;;
                         metadata.image_mimetype = `${fileCat}/${fileExt}`;
@@ -145,7 +146,7 @@ const Vault = () => {
         //sixth console      
         console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);      
         await pinata.pinJSONToIPFS(metadata, options).then(async(result) => {
-          let jsonIntegrity = convertIpfsCidV0ToByte32(posts['accountType'])
+          let jsonIntegrity = convertIpfsCidV0ToByte32(posts['twitterName'])
         //console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);
         
                         //create asset here
@@ -180,7 +181,7 @@ const Vault = () => {
                         console.log("txparamsJS",txParamsJS)
                         const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    
                           from: localStorage.getItem("wallet"),
-                          assetName: posts['profileName'],
+                          assetName: posts['accountType'],
                           unitName: "DI",
                           total: 1,
                           decimals: 0,
@@ -361,7 +362,7 @@ const Vault = () => {
     })} */}
 <h6>CREATE DECENTRALIZED ID</h6>
 <InputGroup className="mt-3" style={{marginLeft:"250px"}}>    
-{posts['accountType'] === "approved"  ? (
+{posts['profileURL'] === "approved"  ? (
 <Button color="site-primary" onClick={approve}>CREATE</Button> 
 ):(
 <Button color="site-primary" onClick={pending}>PENDING</Button>
