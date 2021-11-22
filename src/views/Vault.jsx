@@ -10,8 +10,8 @@ import Modald from "../ModalD";
 import FolowStepsd from "../FolowStepsd";
 import FolowStepsdcopy from "../FolowStepsdcopy";
 import axios from 'axios';
-import ModaldMove from "../ModalDMove";
-import FolowStepsdMove from "../FolowStepsdMove";
+import ModaldWaiting from "../ModalDWaiting";
+import FolowStepsdWaiting from "../FolowStepsdWaiting";
 
 
 const Vault = () => {
@@ -61,6 +61,7 @@ const Vault = () => {
     let [activeTab, setActiveTab] = useState("Deposit");    
     const [isOpen, setIsOpen] = useState(false);
     const [isOpens, setIsOpens] = useState(false);
+    const [isOpenWait, setIsOpenWait] = useState(false);
     var[dis,setDis] = useState("");  
     let history = useHistory();
     const walletsession=async()=>{
@@ -75,6 +76,7 @@ const Vault = () => {
     
       const approve = async() => {
           alert("upload pinata and create asset here ")                    
+          setIsOpenWait(true)
           CreateAsset();                    
       }      
 
@@ -276,7 +278,8 @@ const Vault = () => {
 
 
       const pending=()=>{
-        alert("please wait your profile ")
+        setIsOpenWait(true)
+        //alert("please wait your profile ")
       }
       const togglePopup = () => {
         setIsOpen(false);
@@ -292,6 +295,9 @@ const Vault = () => {
     <Modald visible={isOpens} onClose={() => setIsOpens(false)}>
         <FolowStepsdcopy viewhistory={dis}  />
     </Modald>
+    <ModaldWaiting visible={isOpenWait} onClose={() => setIsOpenWait(false)}>
+        <FolowStepsdWaiting viewhistory={dis}  />
+    </ModaldWaiting>
             <Container fluid>
             {
             localStorage.getItem("wallet")===null || localStorage.getItem("wallet")==="" || localStorage.getItem("wallet")=== undefined ?(

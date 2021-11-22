@@ -18,18 +18,18 @@ const FolowStepsdConnect = ({ className,viewhistory}) => {
             <div className={styles.icon}>            
               {/* <Icon name="upload-file" size="24" /> */}
             </div>
-            <h4 style={{color:'#f5584b'}}>Admin page connected</h4>
+            <h4 style={{color:'#f5584b'}}>Your Profile under verification</h4>
             <div className={styles.details}>
               <div className={styles.info}>{viewhistory}</div>
             </div>
           </div>
           {/* <button type="submit" className={cn("button-small", styles.button)} onClick={onClo()}>Done</button> */}
           <center>
-          <Link className={styles.card} to={"/adminviewdb"}>
+          {/* <Link className={styles.card} to={"/adminviewdb"}>
           <button type="submit" className={cn("button-small", styles.title)} >
             ok
           </button>
-          </Link>
+          </Link> */}
             </center>
         </div>
 
