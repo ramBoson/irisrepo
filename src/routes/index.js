@@ -13,6 +13,7 @@ import admin from '../components/global/admin'
 import Adminviewdb from '../components/global/Adminviewdb'
 import Dashboardduplicate from '../views/Dashboardduplicate'
 import Fileupload from '../views/Fileupload';
+import ApprovePage from '../components/global/ApprovePage';
 
 let routes = [
 	{
@@ -104,5 +105,11 @@ let routes = [
 		component: Fileupload,
 		layout: 'main',
 	},	
+	{
+		path: '/approvepage',
+		name: 'ApprovePage',
+		component: ApprovePage,
+		layout: 'main',
+	},		
 ];
 export default routes;

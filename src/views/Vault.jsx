@@ -20,8 +20,25 @@ import ModaldConnect from "../ModalDConnect";
 const Vault = () => {
 
   const [user, setUser] = useState(null);
+  const [getresponse, setresponse] = useState([]);
+  console.log("getr",getresponse)
+  // useEffect(() => {
+  //   const fetchPosts = async () => {            
+  //     const kycplainget= await axios.get(`http://18.191.6.217:42101/irisapi/v1/kyc/${location.state['profileURL']}`)
+  //     //const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${location.state['algoAddress']}`)                              
+  //     setresponse((kycplainget.data['base64Image']))      
+  //   };
+  //   fetchPosts();
+  // }, []);
   useEffect(() => {
-    axios.get(`http://18.116.51.140:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(u => setUser(u));
+    axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then((u) => {
+      setUser(u)
+      const kycplainget= axios.get(`http://18.191.6.217:42101/irisapi/v1/kyc/${u['profileURL']}`)
+      //const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${location.state['algoAddress']}`)                              
+      setresponse(kycplainget.data)      
+    })
+    
+
   }, []);
   
     const pinataApiKey = "88348e7ce84879e143e1";
@@ -40,7 +57,7 @@ const Vault = () => {
             }
             else{
                 //const res = await axios.get(`http://18.220.0.247:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-                const res = await axios.get(`http://18.116.51.140:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
+                const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
                 setPosts(res.data);          
             }          
         };    
@@ -105,15 +122,41 @@ const Vault = () => {
         return { base64, hex, buffer };
       };
 
+      const waitForConfirmation = async function (algodclient, txId) {
+        let status = (await algodclient.status().do());
+        let lastRound = status["last-round"];
+          while (true) {
+            const pendingInfo = await algodclient.pendingTransactionInformation(txId).do();
+            if (pendingInfo["confirmed-round"] !== null && pendingInfo["confirmed-round"] > 0) {
+              //Got the completed Transaction
+              console.log("Transaction " + txId + " confirmed in round " + pendingInfo["confirmed-round"]);
+              break;
+            }
+            lastRound++;
+            await algodclient.statusAfterBlock(lastRound).do();
+          }
+        };
+      const algosdk = require('algosdk');
+      const tokenapp = {
+          'X-API-key' : 'SVsJKi8vBM1RwK1HEuwhU20hYmwFJelk8bagKPin',
+        }
+      const server = "https://testnet-algorand.api.purestake.io/ps2";
+      let algodPort = "";
+      let client = new algosdk.Algodv2(tokenapp, server, algodPort);
       const CreateAsset=async()=>{
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        let yyyy = today.getFullYear();
+        today = mm + '/' + dd + '/' + yyyy;                                                                 
         let pinataApiKey='88348e7ce84879e143e1';
         let pinataSecretApiKey='e4e8071ff66386726f9fe1aebf2d3235a9f88ceb4468d4be069591eb78d4bf6f';
         const pinataSDK = require('@pinata/sdk');
         const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
             pinata.testAuthentication().then((result) => {            
             console.log(result);  
-            let ge=posts['twitterName'];
-            console.log("ipfsHash",posts['twitterName']);
+            let ge=posts['profileName'];
+            console.log("ipfsHash",posts['accountType']);
             console.log("ipfsname",posts['profileName']);            
                     const body = {
                         message: ge
@@ -146,13 +189,13 @@ const Vault = () => {
           "file_url_mimetype": `image/${fileExt}`,
         };
                         let metadata = arc3MetadataJSON;      
-                        let integrity = convertIpfsCidV0ToByte32(posts['twitterName'])
+                        let integrity = convertIpfsCidV0ToByte32(posts['accountType'])
                         metadata.properties = properties;
-                        metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['twitterName']}`;
+                        metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['accountType']}`;
                         metadata.properties.file_url_integrity = `${integrity.base64}`;
-                        metadata.name = `${posts['accountType']}@arc3`;
-                        metadata.description = posts['accountType'];
-                        metadata.image = `ipfs://${posts['profileURL']}`;
+                        metadata.name = `${posts['profileName']}@arc3`;
+                        metadata.description = posts['profileName'];
+                        metadata.image = `ipfs://${posts['accountType']}`;
                         metadata.image_integrity = `${integrity.base64}`;;
                         metadata.image_mimetype = `${fileCat}/${fileExt}`;
       
@@ -194,7 +237,7 @@ const Vault = () => {
                         console.log("txparamsJS",txParamsJS)
                         const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    
                           from: localStorage.getItem("wallet"),
-                          assetName: posts['accountType'],
+                          assetName: posts['profileName'],
                           unitName: "DI",
                           total: 1,
                           decimals: 0,
@@ -225,17 +268,48 @@ const Vault = () => {
                           })
                           .then((d) => {
                             tx = d;
-                            console.log("txidprint",tx.txId)
+                            console.log("txidprint",tx.txId)                            
                             AlgoSigner.algod({
                               ledger: 'TestNet',
                               path: '/v2/transactions/pending/' + tx.txId
                             })
-                            .then((d) => {
+                            .then(async(d) => {
                               console.log(d);        
                               console.log("beforesuccess",tx.txId)      
+                              await waitForConfirmation(client, tx.txId);
+                              let ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
+                              let assetID = ptx["asset-index"];
+                              const kycplainjsonupdate={	
+                                "createdDate": today,
+                                "firstName": getresponse['firstName'],
+                                "lastName": getresponse['lastName'],
+                                "selfiePath": getresponse['selfiePath'],
+                                "proofType": getresponse['proofType'],
+                                "algoAddress":getresponse['algoAddress'],
+                                "kycStatus": "created",
+                                "reviewedBy": "approved",
+                                "approvedBy": "approved",
+                                "submittedDate": today,
+                                "reviewedDate": "no",
+                                "approvedDate": "no",
+                                "identity":getresponse['identity'],
+                                "countryOfResidence":getresponse['countryOfResidence'],
+                                "citizenship":getresponse['citizenship'],
+                                "base64Image":getresponse['base64Image'],
+                                "assetId":assetID
+                              };
+                              await axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjsonupdate)
+                              .then(async(response) => {
+                                setIsOpenAsset(true)
+                              })
+                              .catch(function (response) {
+                                //handle error
+                                console.log(response);
+                              });        
+
                               //add db asset here
                               //alert("Create Decentralized ID ")                                
-                              setIsOpenAsset(true)
+                              
                             })
                             .catch((e) => {
                               console.error(e);
@@ -383,7 +457,7 @@ const Vault = () => {
     })} */}
 <h6>CREATE D-ID</h6>
 <InputGroup className="mt-3" style={{marginLeft:"250px"}}>    
-{posts['profileURL'] === "approved"  ? (
+{posts['twitterName'] === "Approved"  ? (
   <>
 
 <Button color="site-primary" onClick={()=>approve()}>CREATE</Button> 

@@ -157,14 +157,7 @@ class Dashboard extends Component {
             today = mm + '/' + dd + '/' + yyyy;                                                                 
         let bodyFormData = new FormData();
         bodyFormData.append('files',this.state.selectedFiles);          
-         const userjsonkey= {            
-            "algoAddress": localStorage.getItem("wallet"),
-            "creationTime": today,
-            "accountType": "accountType1",
-            "profileName": document.getElementById("name").value,
-            "twitterName": "twitterName1",
-            "profileURL": "profile"
-          }          
+                
 
          const kycplainjson={	
           "createdDate": today,
@@ -181,25 +174,44 @@ class Dashboard extends Component {
           "approvedDate": "no",
           "identity":this.state.setIpfsHash,
           "countryOfResidence":document.getElementById("cor").value,
-          "citizenship":document.getElementById("citizenship").value
+          "citizenship":document.getElementById("citizenship").value,
+          "base64Image":this.state.setImg,
+          "assetId":"assetId1"
         };
 
-        console.log("formDatafinal1",userjsonkey)
+        
         console.log("formDatafinal2",bodyFormData)
         console.log("formDatafinal3",kycplainjson)
-        axios.post('http://18.191.6.217:42101/irisapi/v1/users',userjsonkey)
-            .then(async(responseuser) => {
-              console.log("uploadeduser",responseuser)                        
-              await axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
+        let userurl="";
+        axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
             .then(async(response) => {
               //console.log("uploadedinitial",response.data)
-              console.log("uploadedinitial",response.data['kycId'])              
+              console.log("uploadedinitial",response.data['kycId'])  
+              userurl=response.data['kycId'];
               //console.log("imageref",this.state.selectedFile)
               //console.log(response);
             await axios.post(`http://18.191.6.217:42101/irisapi/v1/kycImage/${response.data['kycId']}`,bodyFormData)
-            .then((responseimage) => {
-              console.log("uploadedimageonly",responseimage)                
-              this.setState({setisOpenmkyc:true})              
+            .then(async(responseimage) => {
+              console.log("uploadedimageonly",responseimage)   
+              const userjsonkey= {            
+                "algoAddress": localStorage.getItem("wallet"),
+                "creationTime":today,
+                "accountType": this.state.setIpfsHash,
+                "profileName": document.getElementById("name").value,
+                "twitterName": "pending",
+                "profileURL": userurl,
+              }   
+              console.log("formDatafinal1",userjsonkey)
+              await axios.post('http://18.191.6.217:42101/irisapi/v1/users',userjsonkey)
+            .then(async(responseuser) => {
+              console.log("uploadeduser",responseuser)                        
+              this.setState({setisOpenmkyc:true})                                          
+            })
+            .catch((e) => {
+              console.log(e);  
+            })               
+                           
+
             })
             .catch((e) => {
               console.log(e);  
@@ -209,11 +221,7 @@ class Dashboard extends Component {
             .catch(function (response) {
               //handle error
               console.log(response);
-            });              
-            })
-            .catch((e) => {
-              console.log(e);  
-            })               
+            });        
             }                        
         }                
         const onClo=()=>{

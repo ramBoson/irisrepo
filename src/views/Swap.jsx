@@ -15,7 +15,7 @@ const Swap = () => {
     const [getresponse, setresponse] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {      
-      const res = await axios.get(`http://18.116.51.140:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
+      const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
       setresponse(res.data)      
     };
     fetchPosts();
@@ -90,8 +90,8 @@ const Swap = () => {
                                     </thead>
                                     <tbody className="text-center">
                                         <tr>
-                                            <td>{getresponse['accountType']}</td>
-                                            <td>{getresponse['accountType']}</td>
+                                            <td>{getresponse['']}</td>
+                                            <td>{getresponse['profileName']}</td>
                                             <td>{getresponse['accountType']}</td>
                                             <td>{getresponse['accountType']}</td>
                                         </tr>
