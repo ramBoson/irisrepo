@@ -9,6 +9,11 @@ import FolowStepsdMove from "../FolowStepsdMove";
 import Compress from "react-image-file-resizer";
 import ipfs from "./ipfs";
 import fs from 'fs'
+import FolowStepsAsset from "../FolowStepsAsset";
+import ModaldConnect from "../ModalDConnect";
+import FolowStepsEnterAll from '../FolowStepsEnterAll';
+import FolowStepsMovedid from '../FolowStepsMovedid';
+
 class Dashboard extends Component {
     state={
         activeTab: "ViewPool",
@@ -34,12 +39,14 @@ class Dashboard extends Component {
         setIpfsHash:"",
         setBuffer:"",
         setImg:"",
-        Buttonopen:false,
+        Buttonopen:(false),
         selectedFile: undefined,
         fileInfos: [],
         currentFile: undefined,
         setFiles:[],
         formDatafinal:"",
+        setIsOpen:(false),
+        setisOpenmkyc:(false),
         //updateFormData : (initialFormData)
     }                
     render()
@@ -47,19 +54,17 @@ class Dashboard extends Component {
     let filesvalues= [];
     const captureFile =(event) => {
       this.setState({
-        selectedFiles: event.target.files,
+        selectedFiles: event.target.files[0],
       });
       let filess=event.target.files;      
-
-      const formDataprint={files:event.target.files[0]}
-      this.setState({formDatafinal:formDataprint})      
-
+      // const formDataprint={files:event.target.files[0]}
+      // this.setState({formDatafinal:formDataprint})      
       let reader = new FileReader();
       reader.readAsDataURL(filess[0])
       reader.onload=(e)=>{
-        console.log("img data",e.target.result)
-        //const formDataprint={files:e.target.result}
-        //this.setState({formDatafinal:formDataprint})      
+        //console.log("imgdata",e.target.result)
+        const formDataprint={file:e.target.result}
+        this.setState({formDatafinal:formDataprint})                      
       }        
         this.setState({setimagename:event.target.files[0].name})                
         event.stopPropagation()
@@ -112,7 +117,8 @@ class Dashboard extends Component {
                 alert("please connect your wallet...")
             }
             else if(document.getElementById("name").value === null || document.getElementById("name").value === undefined || document.getElementById("name").value === "" || document.getElementById("dob").value === null || document.getElementById("dob").value === undefined || document.getElementById("dob").value === "" || document.getElementById("address").value === null || document.getElementById("address").value === undefined || document.getElementById("address").value === "" || document.getElementById("email").value === null || document.getElementById("email").value === undefined || document.getElementById("email").value === "" || document.getElementById("fileid").value === null || document.getElementById("fileid").value === undefined || document.getElementById("fileid").value === ""){
-                alert("please fill all details..")                                
+                //alert("please fill all details..")                                
+                this.setState({setisOpen:true})
                 }                    
             else{
               //this.setState({setMove:true})
@@ -135,6 +141,7 @@ class Dashboard extends Component {
             }
             else if(document.getElementById("name").value === null || document.getElementById("name").value === undefined || document.getElementById("name").value === "" || document.getElementById("dob").value === null || document.getElementById("dob").value === undefined || document.getElementById("dob").value === "" || document.getElementById("address").value === null || document.getElementById("address").value === undefined || document.getElementById("address").value === "" || document.getElementById("email").value === null || document.getElementById("email").value === undefined || document.getElementById("email").value === "" || document.getElementById("fileid").value === null || document.getElementById("fileid").value === undefined || document.getElementById("fileid").value === ""){              
                 //alert("please fill all details..")                                
+                this.setState({setisOpen:true})
                 }                    
             else{
             //let address="\""+ localStorage.getItem("wallet") +"\"";
@@ -147,250 +154,80 @@ class Dashboard extends Component {
             let dd = String(today.getDate()).padStart(2, '0');
             let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
             let yyyy = today.getFullYear();
-            today = mm + '/' + dd + '/' + yyyy;
-            // const kycjson={	
-            //   "createdDate": document.getElementById("dob").value,
-            //   "firstName": document.getElementById("name").value,
-            //   "lastName": document.getElementById("fileid").value,
-            //   "selfiePath": this.state.setIpfsHash,
-            //   "proofType": document.getElementById("top").value,
-            //   "algoAddress": localStorage.getItem("wallet"),
-            //   "kycStatus": "pending",
-            //   "reviewedBy": "reviewedBy1",
-            //   "approvedBy": "approvedBy1",
-            //   "submittedDate": today,
-            //   "reviewedDate": "reviewedDate1",
-            //   "approvedDate": "approvedDate1",
-            //   "identity":this.state.setIpfsHash,
-            //   "countryOfResidence":document.getElementById("cor").value,
-            //   "citizenship":document.getElementById("citizenship").value
-            // }
-            
-            // console.log(this.state.selectedFile);
-            // console.log("formdata",formData)        
-
-          // let body = {
-          //     files:this.state.selectedFile,
-          //     kycInfo:kycjson,
-          // }
-
-          const kycjson={	
-            "createdDate": "test",
-            "firstName": "test",
-            "lastName": "test",
-            "selfiePath": "test",
-            "proofType": "test",
-            "algoAddress": "test",
-            "kycStatus": "pending",
-            "reviewedBy": "reviewedBy1",
-            "approvedBy": "approvedBy1",
-            "submittedDate": "today",
-            "reviewedDate": "reviewedDate1",
-            "approvedDate": "approvedDate1",
-            "identity":"test",
-            "countryOfResidence":"test",
-            "citizenship":"test"
-          }
-        
-
-          console.log("location",this.state.selectedFile)
-                
-          // const initialFormData = Object.freeze({
-          //   files : (this.state.selectedFile,this.state.setimagename),
-          //   kycInfo: kycjson.toString()
-          // });
-
-          // console.log("initial",initialFormData)
-          // let bodyFormData = new FormData();
-          // bodyFormData.append('files',this.state.selectedFile,this.state.s);
-          // bodyFormData.append('kycInfo',kycjson);
-
-         const userjsonkey= {
-            "userKey": "1",
+            today = mm + '/' + dd + '/' + yyyy;                                                                 
+        let bodyFormData = new FormData();
+        bodyFormData.append('files',this.state.selectedFiles);          
+         const userjsonkey= {            
             "algoAddress": localStorage.getItem("wallet"),
             "creationTime": today,
             "accountType": "accountType1",
             "profileName": document.getElementById("name").value,
             "twitterName": "twitterName1",
             "profileURL": "profile"
-         }
+          }          
 
          const kycplainjson={	
-          "createdDate": "createddate1",
-          "firstName": "fname1 updated",
-          "lastName": "lname1",
-          "selfiePath": "selfie1",
-          "proofType": "proofType1",
-          "algoAddress": "algoAddress1",
-          "kycStatus": "kycStatus1",
-          "reviewedBy": "reviewedBy1",
-          "approvedBy": "approvedBy1",
-          "submittedDate": "submittedDate1",
-          "reviewedDate": "reviewedDate1",
-          "approvedDate": "approvedDate1",
-          "identity":"identity123",
-          "countryOfResidence":"countryOfResidence123",
-          "citizenship":"citizenship123"
+          "createdDate": today,
+          "firstName": document.getElementById("name").value,
+          "lastName": document.getElementById("dob").value,
+          "selfiePath": document.getElementById("fileid").value,
+          "proofType": document.getElementById("top").value,
+          "algoAddress":localStorage.getItem("wallet"),
+          "kycStatus": "create",
+          "reviewedBy": "pending",
+          "approvedBy": "approved",
+          "submittedDate": today,
+          "reviewedDate": "no",
+          "approvedDate": "no",
+          "identity":this.state.setIpfsHash,
+          "countryOfResidence":document.getElementById("cor").value,
+          "citizenship":document.getElementById("citizenship").value
         };
 
-        // let currentFile = this.state.selectedFiles[0];
-        
-        //  this.setState({        
-        //   currentFile: currentFile,
-        // });         
-         
-        // let formData = new FormData();
-        // formData.append("file", currentFile);
-
-        //formDatafinal
-
-        console.log("formDatafinal",this.state.formDatafinal)
-        axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
+        console.log("formDatafinal1",userjsonkey)
+        console.log("formDatafinal2",bodyFormData)
+        console.log("formDatafinal3",kycplainjson)
+        axios.post('http://18.191.6.217:42101/irisapi/v1/users',userjsonkey)
+            .then(async(responseuser) => {
+              console.log("uploadeduser",responseuser)                        
+              await axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
             .then(async(response) => {
-              console.log("uploadedinitial",response.data)
-              console.log("uploadedinitial",response.data['kycId'])
-              //655cdc33-3088-4185-a956-9620ce15f135
-              console.log("imageref",this.state.selectedFile)
-              console.log(response);
-            await axios.post(`http://18.191.6.217:42101/irisapi/v1/kycImage/${response.data['kycId']}`,this.state.formDatafinal)
-            .then((response) => {
-              console.log("uploadedinitial",response)                
+              //console.log("uploadedinitial",response.data)
+              console.log("uploadedinitial",response.data['kycId'])              
+              //console.log("imageref",this.state.selectedFile)
+              //console.log(response);
+            await axios.post(`http://18.191.6.217:42101/irisapi/v1/kycImage/${response.data['kycId']}`,bodyFormData)
+            .then((responseimage) => {
+              console.log("uploadedimageonly",responseimage)                
+              this.setState({setisOpenmkyc:true})              
             })
             .catch((e) => {
-              console.log(response);  
+              console.log(e);  
             })        
               //handle success              
             })
             .catch(function (response) {
               //handle error
               console.log(response);
-            });
-
-
-        
-        // let formDatafinal = new FormData();
-        // formDatafinal.append("image",this.state.selectedFile,this.state.selectedFile.name);
-
-        //  axios.post('http://18.189.143.113:42101/irisapi/v1/kycPlain?',kycplainjson)
-        //     .then(async(response) => {
-        //       console.log("uploadedinitial",response.data)
-        //       console.log("uploadedinitial",response.data['kycId'])
-        //       //655cdc33-3088-4185-a956-9620ce15f135
-        //       console.log("imageref",this.state.selectedFile)
-        //   await axios.post(`http://18.189.143.113:42101/irisapi/v1/kycImage/${response.data['kycId']}`,formDatafinal)
-        //   .then((response) => {            
-        //       console.log("uploadedinitial",response.data)
-        //       //655cdc33-3088-4185-a956-9620ce15f135            
-        //     //handle success
-        //     //console.log(response);
-        //   })
-        //   .catch(function (response) {
-        //     //handle error
-        //     console.log(response);
-        //   });
-
-        //       //handle success
-        //       console.log(response);
-        //     })
-        //     .catch(function (response) {
-        //       //handle error
-        //       console.log(response);
-        //     });
-
-
-        //  axios.post('http://18.189.143.113:42101/irisapi/v1/users/',userjsonkey)
-        //   .then(response => {
-        //     if(response.data.status === 200){
-        //       console.log("uploaded",response.data)
-        //     }
-        //     //handle success
-        //     console.log(response);
-        //   })
-        //   .catch(function (response) {
-        //     //handle error
-        //     console.log(response);
-        //   });
-
-          //console.log("beforeaxi",filesvalues)
-        //  axios.post('http://18.189.143.113:42101/irisapi/v1/kyc/',initialFormData)
-        //     .then(response => {
-        //       if(response.data.status === 200){
-        //         console.log("uploadedinitial",response.data)
-        //       }
-        //       //handle success
-        //       console.log(response);
-        //     })
-        //     .catch(function (response) {
-        //       //handle error
-        //       console.log(response);
-        //     });
-
-          //setimagename - file name 
-          //selectedFile - file
-
-        // axios.post('http://18.189.143.113:42101/irisapi/v1/kyc/',{
-        //     files:this.state.selectedFile,
-        //     kycInfo:kycjson.toString(),
-        // })
-        // .then(function (response) {
-        //     console.log(response);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });         
-        // //   console.log("Bodytag",bodyFormData)
-        //   axios({
-        //     method: "post",
-        //     url: "http://18.189.143.113:42101/irisapi/v1/kyc/",
-        //     data: {              
-        //       kycInfo: kycjson
-        //     }
-        //   })
-        //     .then(function (response) {
-        //       //handle success
-        //       console.log(response);
-        //     })
-        //     .catch(function (response) {
-        //       //handle error
-        //       console.log(response);
-        //     });
-
-            
-            // axios.post('http://18.189.143.113:42101/irisapi/v1/kyc/',kycjson)
-            //   .then(res =>{
-            //     console.log(res.data)
-            //       // if(res.data['result'] === 'User Create / Update Failed !'){
-            //       //   console.log(res.data)
-            //       // }else{
-            //       //   console.log(res.data['result'])
-            //       //   //this.setState({setMove:true});
-            //       //   //alert("upload db")            
-            //       // }                                 
-            //   }).catch((err)=>{
-            //     console.log(err)
-            //   });                                
-            }            
+            });              
+            })
+            .catch((e) => {
+              console.log(e);  
+            })               
+            }                        
         }                
+        const onClo=()=>{
+          this.setState({setisOpen:false})      
+        }
+            
         return (<>
         <InputGroup className="mt-4" >
         <form onSubmit={this.handleSubmit} style={{marginLeft:"400px"}}>          
         <label>Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input placeholder="Name" type="text" value={this.state.value} id="name"/>                
-        <br></br><br></br>        
-        
+        <br></br><br></br>                
         <label>DOB:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input placeholder="DD/MM/YYYY" type="date" value={this.state.value} id="dob" />   
-        {/* <DatePicker                 
-        id="dob"
-         placeholderText="Please select a dob"
-         selected={ this.state.startDate}
-         onChange= { date => this.setState({
-            startDate: date
-            })
-         }
-         dateFormat="MMMM d, yyyy"
-         shouldCloseOnSelect={true}         
-        />      */}             
+        <input placeholder="DD/MM/YYYY" type="date" value={this.state.value} id="dob" />           
         <br></br><br></br>                
         <label>Address:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input placeholder="Address" type="text" value={this.state.value} id="address"/>   
@@ -416,17 +253,25 @@ class Dashboard extends Component {
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         {this.state.Buttonopen ? (                   
                    <Button color="outline-site-primary" style={{marginLeft:'50px'}} onClick={e=>UploadDb()}>Upload</Button>          
-                 ):(
-                  <Button color="outline-site-primary" style={{marginLeft:'50px'}} onClick={e=>UploadDbWait()}>Upload</Button>                      
-                 )}        
+                   ):(
+  <Button color="outline-site-primary" style={{marginLeft:'50px'}} onClick={e=>UploadDbWait()}>Upload</Button>                      
+ )} 
       </form>        
         </InputGroup>                             
                     <br></br><br></br>
                <ModaldMove visible={this.state.setMove} onClose={() => this.setState({setMove:false})}>
-               <FolowStepsdMove viewhistory={this.state.dis}  />
+               <FolowStepsdMove  />
              </ModaldMove>           
+    <ModaldConnect visible={this.state.setisOpen} onClose={() => this.setState({setMove:false})}>
+        <FolowStepsEnterAll onClo={()=>onClo}/>
+    </ModaldConnect>
+    <ModaldConnect visible={this.state.setisOpenmkyc} onClose={() => this.setState({setisOpenmkyc:false})}>
+        <FolowStepsMovedid />
+    </ModaldConnect>
         </>
         );        
     }
 }
 export default Dashboard;
+
+

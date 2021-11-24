@@ -4,13 +4,9 @@ import styles from "./FolowSteps.module.sass";
 //import Icon from "../../../components/Icon";
 //import Loader from "../../../components/Loader";
 //import LoaderCircle from "../../../components/LoaderCircle";
-import history from '../views/history';
 import { Link } from "react-router-dom";
-//import { createBrowserHistory as history} from 'history';
 
-
-const FolowStepsdConnect = ({ className}) => {
-  
+const FolowStepsMovedid = ({ className,viewhistory}) => {
   return (
     <div className={cn(className, styles.steps)}>
       {/* <h1>{test}</h1> */}      
@@ -22,17 +18,22 @@ const FolowStepsdConnect = ({ className}) => {
             <div className={styles.icon}>            
               {/* <Icon name="upload-file" size="24" /> */}
             </div>
-            <h4 style={{color:'#2a7cda'}}>Please wait Your Files has been Uploading ...</h4>            
+            <h4 style={{color:'#2a7cda'}}>Your Details uploaded Successfully...</h4>
+            <div className={styles.details}>
+              <div className={styles.info}>{viewhistory}</div>
+            </div>
           </div>
           {/* <button type="submit" className={cn("button-small", styles.button)} onClick={onClo()}>Done</button> */}
-          {/* onClick={()=>history.push('/vault')} */}
           <center>
           <Link className={styles.card} to={"/createdid"}>
-          <button type="submit" className={cn("button-small", styles.title)} >
-            ok
+          <button type="submit" className={cn("button-small", styles.title)} onClick={()=>window.location.reload()}>
+            OK
           </button>
           </Link>
-          </center>
+          {/* <Link className={styles.card} to={"/adminviewdb"}>
+          
+          </Link> */}
+            </center>
         </div>
 
         
@@ -43,4 +44,4 @@ const FolowStepsdConnect = ({ className}) => {
   );
 };
 
-export default FolowStepsdConnect;
+export default FolowStepsMovedid;

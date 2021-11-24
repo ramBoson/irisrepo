@@ -36,7 +36,7 @@ const Sidebar = (props) => {
     return (<>        
         <div className="sidebar bg-site-secondary">
         <center>        
-            <img src={'/icon.png'} style={{width:100,height:100,position:"relative"}} alt="Logo" />
+            <img src={'/irispic.png'} style={{width:100,height:100,position:"relative"}} alt="Logo" />
             </center>
             <div className="theme-nav-items">            
             <Link to="/dashboardd" className={`theme-nav-item ${history.location.pathname === "/dashboardd" ? "active" : ""}`}>

@@ -6,7 +6,7 @@ import styles from "./FolowSteps.module.sass";
 //import LoaderCircle from "../../../components/LoaderCircle";
 import { Link } from "react-router-dom";
 
-const FolowStepsdConnect = ({ className,viewhistory}) => {
+const FolowStepsAsset = ({ className,viewhistory}) => {
   return (
     <div className={cn(className, styles.steps)}>
       {/* <h1>{test}</h1> */}      
@@ -18,7 +18,7 @@ const FolowStepsdConnect = ({ className,viewhistory}) => {
             <div className={styles.icon}>            
               {/* <Icon name="upload-file" size="24" /> */}
             </div>
-            <h4 style={{color:'#2a7cda'}}>Your Profile under verification</h4>
+            <h4 style={{color:'#2a7cda'}}>Your Profile under verification....</h4>
             <div className={styles.details}>
               <div className={styles.info}>{viewhistory}</div>
             </div>
@@ -33,13 +33,10 @@ const FolowStepsdConnect = ({ className,viewhistory}) => {
           </Link> */}
             </center>
         </div>
-
-        
-            
-          
+                          
       </div>
     </div>
   );
 };
 
-export default FolowStepsdConnect;
+export default FolowStepsAsset;

@@ -1,6 +1,6 @@
 /* global AlgoSigner */
 import { useEffect } from "react";
-import { useState } from "react";
+import { useState,useStyles } from "react";
 //import busd from "./busdAbi";
 //import cbusd from "./cbusdAbi";
 import { Link, useHistory } from "react-router-dom";
@@ -12,9 +12,18 @@ import FolowStepsdcopy from "../FolowStepsdcopy";
 import axios from 'axios';
 import ModaldWaiting from "../ModalDWaiting";
 import FolowStepsdWaiting from "../FolowStepsdWaiting";
+import RefreshIcon from '@material-ui/icons/Refresh';
+import FolowStepsAsset from "../FolowStepsAsset";
+import ModaldConnect from "../ModalDConnect";
 
 
 const Vault = () => {
+
+  const [user, setUser] = useState(null);
+  useEffect(() => {
+    axios.get(`http://18.116.51.140:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(u => setUser(u));
+  }, []);
+  
     const pinataApiKey = "88348e7ce84879e143e1";
     const pinataApiSecret = "e4e8071ff66386726f9fe1aebf2d3235a9f88ceb4468d4be069591eb78d4bf6f";
     const pinataSDK = require('@pinata/sdk');
@@ -62,6 +71,8 @@ const Vault = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpens, setIsOpens] = useState(false);
     const [isOpenWait, setIsOpenWait] = useState(false);
+    const [isOpenAsset, setIsOpenAsset] = useState(false);
+    
     var[dis,setDis] = useState("");  
     let history = useHistory();
     const walletsession=async()=>{
@@ -223,7 +234,8 @@ const Vault = () => {
                               console.log(d);        
                               console.log("beforesuccess",tx.txId)      
                               //add db asset here
-                              alert("Create Decentralized ID ")                                
+                              //alert("Create Decentralized ID ")                                
+                              setIsOpenAsset(true)
                             })
                             .catch((e) => {
                               console.error(e);
@@ -278,8 +290,9 @@ const Vault = () => {
 
 
       const pending=()=>{
+        //setIsOpenAsset(true)
         setIsOpenWait(true)
-        alert("please wait your profile ")
+        //alert("please wait your profile Not Approved ... ")
       }
       const togglePopup = () => {
         setIsOpen(false);
@@ -289,12 +302,15 @@ const Vault = () => {
     return (
        
     <section className="p-0 my-5">            
-    <Modald visible={isOpen} onClose={() => setIsOpen(false)}>
-        <FolowStepsd viewhistory={dis}  />
-    </Modald>
-    <Modald visible={isOpens} onClose={() => setIsOpens(false)}>
+    <ModaldConnect visible={isOpen} onClose={() => setIsOpen(false)}>
+        <FolowStepsAsset viewhistory={dis}/>
+    </ModaldConnect>
+    <ModaldWaiting visible={isOpenAsset} onClose={() => setIsOpenAsset(false)}>
+        <FolowStepsAsset viewhistory={dis}  />
+    </ModaldWaiting>
+    <ModaldConnect visible={isOpens} onClose={() => setIsOpens(false)}>
         <FolowStepsdcopy viewhistory={dis}  />
-    </Modald>
+    </ModaldConnect>
     <ModaldWaiting visible={isOpenWait} onClose={() => setIsOpenWait(false)}>
         <FolowStepsdWaiting viewhistory={dis}  />
     </ModaldWaiting>
@@ -324,8 +340,7 @@ const Vault = () => {
    <div>         
    <div>
    <h6>CREATE D-ID</h6>
-   <InputGroup className="mt-3" style={{marginLeft:"250px"}}>
-       
+   <InputGroup className="mt-3" style={{marginLeft:"250px"}}>       
        <Button color="site-primary">CREATE</Button>
    </InputGroup>                                    
    </div>
@@ -369,11 +384,18 @@ const Vault = () => {
 <h6>CREATE D-ID</h6>
 <InputGroup className="mt-3" style={{marginLeft:"250px"}}>    
 {posts['profileURL'] === "approved"  ? (
+  <>
+
 <Button color="site-primary" onClick={()=>approve()}>CREATE</Button> 
+{/* <RefreshIcon style={{fontSize:"40px",color:"#2a7cda"}} onClick={()=>{window.location.reload(false)}}/> */}
+</>
 ):(
   <>
   {/* {setIsOpenWait(true)} */}
-<Button color="site-primary" onClick={()=>pending()}>PENDING</Button>
+  
+<Button color="site-primary" onClick={()=>pending()}>CREATE</Button>
+{/* <RefreshIcon style={{fontSize:"40px",color:"#2a7cda"}} onClick={()=>{window.location.reload(false)}}/> */}
+
 </>
 )}
    
