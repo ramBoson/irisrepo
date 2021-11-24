@@ -31,7 +31,7 @@ const FolowStepsList = ({ className,data,datas}) => {
                {data.map((x) => (
                     // <h6 style={{cursor:"pointer",color:bgcolor}} onClick={()=>boxClick()}>{x.address}</h6>))}               
                     <>
-                    <h6  className={cn(styles.details)} style={{cursor:"pointer",color:'#f5584b'}} onClick={()=>{(datas(x.address)) 
+                    <h6  className={cn(styles.details)} style={{cursor:"pointer",color:'#2a7cda'}} onClick={()=>{(datas(x.address)) 
                     localStorage.setItem("wallet",x.address)
                     }}>{x.address.slice(0,15)}....{x.address.slice(45,58)}</h6>                     
                     </>

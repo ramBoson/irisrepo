@@ -41,7 +41,7 @@ const ModalConnect = ({
         
         <div className={cn(styles.outer, outerClassName)}>
           {/* <OutsideClickHandler onOutsideClick={onClose}> */}
-            <div className={cn(styles.container, containerClassName)}>
+            <div className={cn(styles.container, containerClassName)}>                          
               {children}              
               {/* <button className={styles.close} onClick={onClose}>
                 <Icon name="close" size="14" />

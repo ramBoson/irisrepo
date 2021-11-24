@@ -7,3 +7,73 @@ header, footer{
     background-color: #212121;
     color: #ffffff;
 }
+.steps_wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+.steps_wrapper .steps {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    min-width: 1000px;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 0 auto;
+}
+.steps_wrapper .steps .step {
+    width: 100%;
+    max-width: 200px;
+    flex-direction: column;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+.steps_wrapper .steps .step .step-icon-wrapper {
+    width: 88px;
+    min-width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: rgb(0 0 0 / 2%) 0px 1px 3px 0px, rgb(27 31 35 / 15%) 0px 0px 0px 1px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 25px;
+}
+.steps_wrapper .steps .step .step-icon-wrapper>div {
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    display: grid;
+    background: #9daab6;
+    place-items: center;
+}
+.steps_wrapper .steps .step .step-icon-wrapper>div.highlight {
+    background: linear-gradient(253.34deg, #00d2ff 11.3%, #3a7bd5 106.44%);
+}
+.steps_wrapper .steps .step .step-text .title {
+    font-size: 18px;
+    line-height: 22px;
+    text-align: center;
+    margin: 0 0 10px;
+}
+.steps_wrapper .steps .step .step-text .date, .steps_wrapper .steps .step .step-text .time {
+    font-weight: normal;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+.steps_wrapper .steps .horizontal-line {
+    display: block;
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translate(-50%);
+    width: 80%;
+    height: 1px;
+    background-color: #74818d;
+}

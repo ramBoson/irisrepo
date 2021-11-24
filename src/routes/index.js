@@ -11,6 +11,8 @@ import blackStake from '../views/blackStaking';
 import lpStake from '../views/LpStaking';
 import admin from '../components/global/admin'
 import Adminviewdb from '../components/global/Adminviewdb'
+import Dashboardduplicate from '../views/Dashboardduplicate'
+import Fileupload from '../views/Fileupload';
 
 let routes = [
 	{
@@ -19,20 +21,20 @@ let routes = [
 		layout: 'auth',
 	},
 	{
-		path: '/dashboard',
+		path: '/createkyc',
 		name: 'Dashboard',
 		component: Dashboard,
 		layout: 'main',
 	},
 	{
-		path: '/vault',
-		name: 'Vault',
+		path: '/createdid',
+		name: 'createdid',
 		component: Vault,
 		layout: 'main',
 	},
 	{
-		path: '/swap',
-		name: 'Swap',
+		path: '/viewdid',
+		name: 'viewdid',
 		component: Swap,
 		layout: 'main',
 	},
@@ -90,5 +92,17 @@ let routes = [
 		component: Adminviewdb,
 		layout: 'main',
 	},
+	{
+		path: '/dashboardd',
+		name: 'dashboardd',
+		component: Dashboardduplicate,
+		layout: 'main',
+	},	
+	{
+		path: '/fileupload',
+		name: 'Fileupload',
+		component: Fileupload,
+		layout: 'main',
+	},	
 ];
 export default routes;

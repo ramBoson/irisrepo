@@ -33,26 +33,28 @@ const Sidebar = (props) => {
     useEffect(()=>{
         monitorNavbar();
     },[])
-    return (<>
-   
-     
+    return (<>        
         <div className="sidebar bg-site-secondary">
-        <center>
+        <center>        
             <img src={'/icon.png'} style={{width:100,height:100,position:"relative"}} alt="Logo" />
             </center>
-            <div className="theme-nav-items">
-               
-                <Link to="/dashboard" className={`theme-nav-item ${history.location.pathname == "/dashboard" ? "active" : ""}`}>
+            <div className="theme-nav-items">            
+            <Link to="/dashboardd" className={`theme-nav-item ${history.location.pathname === "/dashboardd" ? "active" : ""}`}>
                     <i className="fa fa-tachometer-alt "></i>
-                    <span className="ml-3">Dashboard</span>
+                    <span className="ml-3">DASHBOARD</span>
                 </Link>
-                <Link to="/vault" className={`theme-nav-item ${history.location.pathname == "/vault" ? "active" : ""}`}>
+               
+                <Link to="/createkyc" className={`theme-nav-item ${history.location.pathname === "/createkyc" ? "active" : ""}`}>
                     <i className="fa fa-wallet"></i>
-                    <span className="ml-3">Create Decentralized Id</span>
+                    <span className="ml-3">CREATE KYC</span>
                 </Link>
-                <Link to="/swap" className={`theme-nav-item ${history.location.pathname == "/swap" ? "active" : ""}`}>
+                <Link to="/createdid" className={`theme-nav-item ${history.location.pathname === "/createdid" ? "active" : ""}`}>
+                    <i className="fa fa-wallet"></i>
+                    <span className="ml-3">CREATE D-ID</span>
+                </Link>
+                <Link to="/viewdid" className={`theme-nav-item ${history.location.pathname === "/viewdid" ? "active" : ""}`}>
                     <i className="fa fa-retweet"></i>
-                    <span className="ml-3">View Decentralized Id</span>
+                    <span className="ml-3">VIEW D-ID</span>
                 </Link>
                 {/* <Link to="/yield-farming" className={`theme-nav-item ${history.location.pathname == "/yield-farming" ? "active" : ""}`}>
                     <i className="fa fa-tractor"></i>
@@ -79,11 +81,11 @@ const Sidebar = (props) => {
                     <i className="fa fa-moon"></i>
                     <span className="ml-3">Dark</span>
                 </Link> */}
-                <Link to="#" className="theme-nav-item custom-navbar-toggler" onClick={e => toggleSidebar()}>
+                {/* <Link to="#" className="theme-nav-item custom-navbar-toggler" onClick={e => toggleSidebar()}>
                     <i className="fa show-icon fa-arrow-left"></i>
                     <i className="fa hide-icon fa-arrow-right"></i>
                     <span className="ml-3">Hide Menu</span>
-                </Link>
+                </Link> */}
                 <div className="d-sm-flex d-lg-none">
                     <Button block color="outline-site-primary">Ethereum Mainnet</Button>
                     <Button block color="site-primary" className="ml-0 ml-sm-4 mt-3 mt-sm-0">Connect Wallet</Button>

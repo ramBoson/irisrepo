@@ -70,13 +70,13 @@ const Vault = () => {
     }
     useEffect(()=>{walletsession()},[])
     useEffect(() => {
-        document.getElementById("header-title").innerText = "Create Decentralized Id";
+        document.getElementById("header-title").innerText = "CREATE D-ID";
     })
 
     
       const approve = async() => {
-          alert("upload pinata and create asset here ")                    
-          setIsOpenWait(true)
+          //alert("upload pinata and create asset here ")                    
+          setIsOpenWait(false)
           CreateAsset();                    
       }      
 
@@ -279,7 +279,7 @@ const Vault = () => {
 
       const pending=()=>{
         setIsOpenWait(true)
-        //alert("please wait your profile ")
+        alert("please wait your profile ")
       }
       const togglePopup = () => {
         setIsOpen(false);
@@ -323,7 +323,7 @@ const Vault = () => {
    <div className="p-3">                                    
    <div>         
    <div>
-   <h6>CREATE DECENTRALIZED ID</h6>
+   <h6>CREATE D-ID</h6>
    <InputGroup className="mt-3" style={{marginLeft:"250px"}}>
        
        <Button color="site-primary">CREATE</Button>
@@ -366,12 +366,15 @@ const Vault = () => {
 {/* {posts.map((x,index)=>{   
 <h1>{x.algoAddress}</h1>;
     })} */}
-<h6>CREATE DECENTRALIZED ID</h6>
+<h6>CREATE D-ID</h6>
 <InputGroup className="mt-3" style={{marginLeft:"250px"}}>    
 {posts['profileURL'] === "approved"  ? (
-<Button color="site-primary" onClick={approve}>CREATE</Button> 
+<Button color="site-primary" onClick={()=>approve()}>CREATE</Button> 
 ):(
-<Button color="site-primary" onClick={pending}>PENDING</Button>
+  <>
+  {/* {setIsOpenWait(true)} */}
+<Button color="site-primary" onClick={()=>pending()}>PENDING</Button>
+</>
 )}
    
 </InputGroup>                                    

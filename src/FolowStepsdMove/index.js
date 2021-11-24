@@ -22,7 +22,7 @@ const FolowStepsdConnect = ({ className,viewhistory}) => {
             <div className={styles.icon}>            
               {/* <Icon name="upload-file" size="24" /> */}
             </div>
-            <h4 style={{color:'#f5584b'}}>Please wait Your Files has been Uploading ...</h4>
+            <h4 style={{color:'#2a7cda'}}>Please wait Your Files has been Uploading ...</h4>
             <div className={styles.details}>
               <div className={styles.info}>{viewhistory}</div>
             </div>

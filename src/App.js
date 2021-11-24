@@ -32,7 +32,7 @@ function App() {
 									);
 							}
 						})}
-						<Redirect to="/dashboard"/>
+						<Redirect to="/dashboardd"/>
 					</Switch>
 				</BrowserRouter>
 			</Provider>

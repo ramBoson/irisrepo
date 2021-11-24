@@ -212,7 +212,7 @@ const BurnVault = () => {
               id="mymodal"
               centered
             >
-              <Modal.Header className="myModal" style={{backgroundColor:"#f5584b",color:"white"}} closeButton>
+              <Modal.Header className="myModal" style={{backgroundColor:"#2a7cda",color:"white"}} closeButton>
                  
                 <Modal.Title id="contained-modal-title-vcenter" >
                   Swap
@@ -220,7 +220,7 @@ const BurnVault = () => {
                
               </Modal.Header>
               
-              <Modal.Body style={{backgroundColor:"#f5584b", color:"white"}}  className="myModal">
+              <Modal.Body style={{backgroundColor:"#2a7cda", color:"white"}}  className="myModal">
                 <InputGroup>
           <InputGroup.Prepend>
            <h5>Black : </h5>&nbsp;
@@ -238,7 +238,7 @@ const BurnVault = () => {
           </InputGroup.Prepend>
         </InputGroup>
               </Modal.Body>
-              <Modal.Footer style={{backgroundColor:"#f5584b"}}  className="myModal">
+              <Modal.Footer style={{backgroundColor:"#2a7cda"}}  className="myModal">
                 <Button variant="primary" onClick={swap} style={{backgroundColor:"#e3e4e6", color:"#ff0083"}}>Swap</Button>
               </Modal.Footer>
             </Modal>

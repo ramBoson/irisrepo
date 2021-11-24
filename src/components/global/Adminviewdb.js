@@ -12,7 +12,7 @@ const Adminviewdb=()=> {
   const [getresponse, setresponse] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {      
-      const res = await axios.get(`http://18.116.51.140:42101/irisapi/v1/users`)
+      const res = await axios.get(`http://18.189.143.113:42101/irisapi/v1/users`)
       setresponse(res.data)
       
     };
@@ -101,7 +101,7 @@ const Adminviewdb=()=> {
                             <td>{user.twitterName}</td>
                             <td>{user.accountType}</td>
                             <td>{user.profileURL}</td>
-                            <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall(user.userkey,user.algoAddress,user.creationTime,user.twitterName,user.profileName,user.profileURL,user.accountType)}>CLICK</td>
+                            <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall(user.userkey,user.algoAddress,user.creationTime,user.twitterName,user.profileName,user.profileURL,user.accountType)}>Approve</td>
                         </tr>
                     )}
                 </tbody>

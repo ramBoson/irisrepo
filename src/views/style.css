@@ -29,7 +29,7 @@ text-align: center;
     max-height: 60vh;
     /* margin-top: calc(100vh - 85vh - 20px); */
     margin-bottom: 10px;
-    background:#f5584b;
+    background:#2a7cda;
     border-radius: 4px;
     padding: 10px;
     border: 1px solid #999;
@@ -42,7 +42,7 @@ text-align: center;
     /* position: fixed;
     right: calc(15% - 30px);
     top: calc(100vh - 85vh - 33px); */
-    background:#f5584b;
+    background:#2a7cda;
     width: 20px;
     height: 20px;
     border-radius: 50%;

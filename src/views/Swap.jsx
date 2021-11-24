@@ -22,7 +22,7 @@ const Swap = () => {
   }, []);
   
     useEffect(() => {
-        document.getElementById("header-title").innerText = "View Your Decentralized Id";
+        document.getElementById("header-title").innerText = "VIEW D-ID";
     } )       
     const togglePopup = () => {
         setIsOpen(false);
@@ -45,7 +45,7 @@ const Swap = () => {
                     <Col xl="8" lg="8" md="10" sm="12">
                         <Card className="custom-card">
                             <div className="p-3">
-                            <h4>Decentralized Id</h4>                                                                
+                            <h4>YOUR D-ID</h4>                                                                
                                 <Table bordered responsive className="mt-3">
                                     <thead>
                                         <tr>
@@ -78,7 +78,7 @@ const Swap = () => {
                     <Col xl="8" lg="8" md="10" sm="12">
                         <Card className="custom-card">
                             <div className="p-3">
-                            <h4>Decentralized Id</h4>                                                                
+                            <h4>YOUR D-ID</h4>                                                                
                                 <Table bordered responsive className="mt-3">
                                     <thead>
                                         <tr>

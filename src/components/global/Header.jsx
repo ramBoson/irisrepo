@@ -90,9 +90,9 @@ console.error(e);
 
 
     return (<>
-       <Modald visible={isOpen} onClose={() => setIsOpen(false)}>
+       {/* <Modald visible={isOpen} onClose={() => setIsOpen(false)}>
         <FolowStepsd viewhistory={dis}  />
-      </Modald>
+      </Modald> */}
 
       <ModaldConnect visible={isOpen} onClose={() => setIsOpen(false)}>
         <FolowStepsdConnect viewhistory={dis}  />
@@ -104,13 +104,13 @@ console.error(e);
                     {/* <h5 className="m-0" id="header-title"></h5> */}
                     <h5 className="m-0" id="header-title"></h5>
                     <div className="ml-auto topbar-btns">
-                        <Button color="outline-site-primary">Algorand</Button>
+                        <Button color="outline-site-primary">ALGORAND</Button>
                         {
                             localStorage.getItem("wallet")===null || localStorage.getItem("wallet")==="" ||localStorage.getItem("wallet")==='undefined' ||localStorage.getItem("wallet")===undefined ?  
-                            (<Button color="site-primary" className="ml-4"onClick={Connectwallet}>Connect Wallet</Button>):(
+                            (<Button color="site-primary" className="ml-4"onClick={Connectwallet}>CONNECT WALLET</Button>):(
                               < ><Button color="site-primary" className="ml-4" onClick={Connectwallet}>{localStorage.getItem("wallet").slice(0,10)}......{localStorage.getItem("wallet").slice(39,42)}</Button>
                                 &nbsp; &nbsp;
-                                <Button color="outline-site-primary" onClick={Disconnect}>disconnect</Button>
+                                <Button color="outline-site-primary" onClick={Disconnect}>DISCONNECT</Button>
                                 </>    
                             )
                         }
