@@ -103,13 +103,13 @@ let routes = [
 		path: '/approvepage',
 		name: 'ApprovePage',
 		component: ApprovePage,
-		layout: 'main',
+		layout: 'auth',
 	},		
 	{
 		path: '/adminviewdb',
 		name: 'adminviewdb',
 		component: Adminviewdb,
-		layout: 'main',
+		layout: 'auth',
 	},
 ];
 export default routes;
