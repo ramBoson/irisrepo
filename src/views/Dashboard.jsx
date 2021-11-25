@@ -13,44 +13,61 @@ import FolowStepsAsset from "../FolowStepsAsset";
 import ModaldConnect from "../ModalDConnect";
 import FolowStepsEnterAll from '../FolowStepsEnterAll';
 import FolowStepsMovedid from '../FolowStepsMovedid';
+import ModalDLoading from '../ModalDLoading';
+import FolowStepsLoading from '../FolowStepsLoading';
 
 class Dashboard extends Component {
     state={
         activeTab: "ViewPool",
     }    
+    state={    
+      name: "",
+      dob:"",
+      address:"",
+      email:"",
+      phoneno:"",
+      photo:"",
+      setMove:false,
+      dis:"",
+      setimagename:"",
+      setButtonopen:"",
+      setIpfsHash:"",
+      setBuffer:"",
+      setImg:"",
+      Buttonopen:(false),
+      selectedFile: undefined,
+      fileInfos: [],
+      currentFile: undefined,
+      setFiles:[],
+      formDatafinal:"",
+      setIsOpen:(false),
+      setisOpenmkyc:(false),
+      setLoading:(false),
+      setCurrent:false,
+      //updateFormData : (initialFormData)
+  }
     setActiveTab = (tab) => {
         console.log(tab)
         this.setState({ activeTab: tab })
     }
     componentDidMount() {
-        document.getElementById("header-title").innerText = "CREATE KYC";
+        document.getElementById("header-title").innerText = "CREATE KYC";              
+              if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined){  
+                  alert("please connect your wallet")
+              }
+              else{                  
+                  axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then((e)=>{
+                    if(e.data['algoAddress'] === localStorage.getItem('wallet'))
+                    this.setState({ setCurrent:true});
+                    else
+                    this.setState({ setCurrent:false});
+                  });                  
+              }                      
     }        
-    state={    
-        name: "",
-        dob:"",
-        address:"",
-        email:"",
-        phoneno:"",
-        photo:"",
-        setMove:false,
-        dis:"",
-        setimagename:"",
-        setButtonopen:"",
-        setIpfsHash:"",
-        setBuffer:"",
-        setImg:"",
-        Buttonopen:(false),
-        selectedFile: undefined,
-        fileInfos: [],
-        currentFile: undefined,
-        setFiles:[],
-        formDatafinal:"",
-        setIsOpen:(false),
-        setisOpenmkyc:(false),
-        //updateFormData : (initialFormData)
-    }                
+                    
     render()
-     {      
+    {      
+      
     let filesvalues= [];
     const captureFile =(event) => {
       this.setState({
@@ -142,9 +159,14 @@ class Dashboard extends Component {
             else if(document.getElementById("name").value === null || document.getElementById("name").value === undefined || document.getElementById("name").value === "" || document.getElementById("dob").value === null || document.getElementById("dob").value === undefined || document.getElementById("dob").value === "" || document.getElementById("address").value === null || document.getElementById("address").value === undefined || document.getElementById("address").value === "" || document.getElementById("email").value === null || document.getElementById("email").value === undefined || document.getElementById("email").value === "" || document.getElementById("fileid").value === null || document.getElementById("fileid").value === undefined || document.getElementById("fileid").value === ""){              
                 //alert("please fill all details..")                                
                 this.setState({setisOpen:true})
-                }                    
+                }    
+                else if(this.state.setCurrent === true){
+                  alert("Your Profile Already Created")
+                }                
             else{
             //let address="\""+ localStorage.getItem("wallet") +"\"";
+            this.setState({setisOpen:false})
+            this.setState({setLoading:true})
             console.log("dass",localStorage.getItem("wallet"))
             //document.write()
             console.log(this.state.setIpfsHash)
@@ -176,21 +198,21 @@ class Dashboard extends Component {
           "countryOfResidence":document.getElementById("cor").value,
           "citizenship":document.getElementById("citizenship").value,
           "base64Image":this.state.setImg,
-          "assetId":"assetId1"
+          "assetId":"null"
         };
 
         
         console.log("formDatafinal2",bodyFormData)
         console.log("formDatafinal3",kycplainjson)
         let userurl="";
-        axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
+        axios.post('http://3.15.6.43:42101/irisapi/v1/kycPlain?',kycplainjson)
             .then(async(response) => {
               //console.log("uploadedinitial",response.data)
               console.log("uploadedinitial",response.data['kycId'])  
               userurl=response.data['kycId'];
               //console.log("imageref",this.state.selectedFile)
               //console.log(response);
-            await axios.post(`http://18.191.6.217:42101/irisapi/v1/kycImage/${response.data['kycId']}`,bodyFormData)
+            await axios.post(`http://3.15.6.43:42101/irisapi/v1/kycImage/${response.data['kycId']}`,bodyFormData)
             .then(async(responseimage) => {
               console.log("uploadedimageonly",responseimage)   
               const userjsonkey= {            
@@ -202,16 +224,15 @@ class Dashboard extends Component {
                 "profileURL": userurl,
               }   
               console.log("formDatafinal1",userjsonkey)
-              await axios.post('http://18.191.6.217:42101/irisapi/v1/users',userjsonkey)
+              await axios.post('http://3.15.6.43:42101/irisapi/v1/users',userjsonkey)
             .then(async(responseuser) => {
               console.log("uploadeduser",responseuser)                        
+              this.setState({setLoading:false})   
               this.setState({setisOpenmkyc:true})                                          
             })
             .catch((e) => {
               console.log(e);  
-            })               
-                           
-
+            })                                          
             })
             .catch((e) => {
               console.log(e);  
@@ -276,7 +297,10 @@ class Dashboard extends Component {
     <ModaldConnect visible={this.state.setisOpenmkyc} onClose={() => this.setState({setisOpenmkyc:false})}>
         <FolowStepsMovedid />
     </ModaldConnect>
-        </>
+    <ModalDLoading visible={this.state.setLoading} onClose={() => this.setState({setLoading:false})}>
+        <FolowStepsLoading />
+    </ModalDLoading>
+        </>        
         );        
     }
 }

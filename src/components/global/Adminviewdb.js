@@ -14,7 +14,7 @@ const Adminviewdb=()=> {
   const [getresponse, setresponse] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {      
-      const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users`)
+      const res = await axios.get(`http://3.15.6.43:42101/irisapi/v1/users`)
       setresponse(res.data)
       
     };

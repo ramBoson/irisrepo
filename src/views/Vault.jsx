@@ -15,13 +15,21 @@ import FolowStepsdWaiting from "../FolowStepsdWaiting";
 import RefreshIcon from '@material-ui/icons/Refresh';
 import FolowStepsAsset from "../FolowStepsAsset";
 import ModaldConnect from "../ModalDConnect";
-
+import ModalDLoading from '../ModalDLoading';
+import FolowStepsLoading from '../FolowStepsLoading';
 
 const Vault = () => {
-
+  const [getmetadata,setmetadata] = useState(""); 
+  console.log("getmetadata",getmetadata)
+  const [getcurrent, setcurrent] = useState(false); 
+  console.log("Current",getcurrent) 
+  const [getLoading, setLoading] = useState(false);  
   const [user, setUser] = useState(null);
-  const [getresponse, setresponse] = useState([]);
+  console.log("userprint",user)
+  const [getresponse, setresponse] = useState([]);  
   console.log("getr",getresponse)
+  const [getassetid, setassetid] = useState('');
+  console.log("getassetid",getassetid)
   // useEffect(() => {
   //   const fetchPosts = async () => {            
   //     const kycplainget= await axios.get(`http://18.191.6.217:42101/irisapi/v1/kyc/${location.state['profileURL']}`)
@@ -31,14 +39,12 @@ const Vault = () => {
   //   fetchPosts();
   // }, []);
   useEffect(() => {
-    axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then((u) => {
-      setUser(u)
-      const kycplainget= axios.get(`http://18.191.6.217:42101/irisapi/v1/kyc/${u['profileURL']}`)
-      //const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${location.state['algoAddress']}`)                              
-      setresponse(kycplainget.data)      
-    })
-    
-
+    axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(u) => {
+      setUser(u.data)
+      await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${u.data['profileURL']}`).then((response)=>{
+      setresponse(response.data)      
+      })            
+    })    
   }, []);
   
     const pinataApiKey = "88348e7ce84879e143e1";
@@ -55,10 +61,21 @@ const Vault = () => {
 
                 alert("please connect your wallet")
             }
-            else{
-                //const res = await axios.get(`http://18.220.0.247:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-                const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-                setPosts(res.data);          
+            else{                
+                await axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(res)=>{
+                  setPosts(res.data); 
+                  console.log("Nullres",res)
+                  await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${res.data['profileURL']}`).then((response)=>{
+                    console.log("ResponseCon",response.data['assetId'])
+                    if(response.data['assetId'] === null || response.data['assetId'] === " " || response.data['assetId'] === undefined || response.data['assetId'] === "null"){
+                      setcurrent(false)
+                    }                    
+                    else{                      
+                      setcurrent(true)                                        
+                    }                    
+                });
+                });
+                
             }          
         };    
         fetchPosts();
@@ -105,7 +122,17 @@ const Vault = () => {
       const approve = async() => {
           //alert("upload pinata and create asset here ")                    
           setIsOpenWait(false)
+        if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined)
+        {
+          alert("please conenct your wallet")
+        }
+        else if(getcurrent === true){
+          alert("you are already created D-ID")          
+        }
+        else{
           CreateAsset();                    
+        }
+          
       }      
 
       const convertIpfsCidV0ToByte32 = (cid) => {
@@ -136,6 +163,51 @@ const Vault = () => {
             await algodclient.statusAfterBlock(lastRound).do();
           }
         };
+
+        function sleep(time){
+          return new Promise((resolve)=>setTimeout(resolve,time)
+        )
+    }
+
+    const updatedb=async(today,assetid)=>{
+      sleep(10000).then(async()=>{
+        let kycplainjsonupdate={	
+          "kycKey":user['profileURL'],
+          "createdDate": today,
+          "firstName": getresponse['firstName'],
+          "lastName": getresponse['lastName'],
+          "selfiePath": getresponse['selfiePath'],
+          "proofType": getresponse['proofType'],
+          "algoAddress":getresponse['algoAddress'],
+          "kycStatus": "created",
+          "reviewedBy": "approved",
+          "approvedBy": "approved",
+          "submittedDate": today,
+          "reviewedDate": "no",
+          "approvedDate": "no",
+          "identity":getresponse['identity'],
+          "countryOfResidence":getresponse['countryOfResidence'],
+          "citizenship":getresponse['citizenship'],
+          "base64Image":getresponse['base64Image'],
+          "assetId": localStorage.getItem("Assetid")
+        };
+        console.log("afterjsonchange",kycplainjsonupdate)
+        sleep(2000).then(async()=>{
+          await axios.post('http://3.15.6.43:42101/irisapi/v1/kycPlain?',kycplainjsonupdate)
+        .then(async(response) => {
+          console.log("configjson",response)
+          setLoading(false)
+          setIsOpenAsset(true)
+        })
+        .catch(function (response) {
+          //handle error
+          console.log(response);
+        });        
+
+       })
+        
+     })
+    }
       const algosdk = require('algosdk');
       const tokenapp = {
           'X-API-key' : 'SVsJKi8vBM1RwK1HEuwhU20hYmwFJelk8bagKPin',
@@ -144,6 +216,16 @@ const Vault = () => {
       let algodPort = "";
       let client = new algosdk.Algodv2(tokenapp, server, algodPort);
       const CreateAsset=async()=>{
+        if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined)
+        {
+          alert("please conenct your wallet")
+        }
+        else if(getcurrent === true){
+          alert("you are already created D-ID")          
+        }
+        else{
+
+        setLoading(true)
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -198,13 +280,12 @@ const Vault = () => {
                         metadata.image = `ipfs://${posts['accountType']}`;
                         metadata.image_integrity = `${integrity.base64}`;;
                         metadata.image_mimetype = `${fileCat}/${fileExt}`;
-      
+      setmetadata(metadata)
         //sixth console      
         console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);      
         await pinata.pinJSONToIPFS(metadata, options).then(async(result) => {
-          let jsonIntegrity = convertIpfsCidV0ToByte32(posts['twitterName'])
-        //console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);
-        
+        let jsonIntegrity = convertIpfsCidV0ToByte32(posts['twitterName'])
+        //console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);        
                         //create asset here
                         const algosdk = require('algosdk');  
                         const CryptoJS = require("crypto-js");  
@@ -216,7 +297,7 @@ const Vault = () => {
                               'X-API-key' : 'SVsJKi8vBM1RwK1HEuwhU20hYmwFJelk8bagKPin',
                         }    
                         let algodClient = new algosdk.Algodv2(token, server, port);
-                        var encrypted = CryptoJS.AES.encrypt("dbgethere", "password");
+                        var encrypted = CryptoJS.AES.encrypt(getmetadata,(posts['profileName'].slice(0, 2)));
                         //U2FsdGVkX18ZUVvShFSES21qHsQEqZXMxQ9zgHy+bu0=
                       
                     AlgoSigner.connect()
@@ -277,36 +358,11 @@ const Vault = () => {
                               console.log(d);        
                               console.log("beforesuccess",tx.txId)      
                               await waitForConfirmation(client, tx.txId);
-                              let ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
-                              let assetID = ptx["asset-index"];
-                              const kycplainjsonupdate={	
-                                "createdDate": today,
-                                "firstName": getresponse['firstName'],
-                                "lastName": getresponse['lastName'],
-                                "selfiePath": getresponse['selfiePath'],
-                                "proofType": getresponse['proofType'],
-                                "algoAddress":getresponse['algoAddress'],
-                                "kycStatus": "created",
-                                "reviewedBy": "approved",
-                                "approvedBy": "approved",
-                                "submittedDate": today,
-                                "reviewedDate": "no",
-                                "approvedDate": "no",
-                                "identity":getresponse['identity'],
-                                "countryOfResidence":getresponse['countryOfResidence'],
-                                "citizenship":getresponse['citizenship'],
-                                "base64Image":getresponse['base64Image'],
-                                "assetId":assetID
-                              };
-                              await axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjsonupdate)
-                              .then(async(response) => {
-                                setIsOpenAsset(true)
-                              })
-                              .catch(function (response) {
-                                //handle error
-                                console.log(response);
-                              });        
-
+                              let ptx = await algodClient.pendingTransactionInformation(tx.txId).do();                              
+                              setassetid(ptx["asset-index"])
+                              localStorage.setItem("Assetid",(ptx["asset-index"]).toString())
+                              console.log("AssetId",ptx["asset-index"])                              
+                              await updatedb(today,ptx["asset-index"])
                               //add db asset here
                               //alert("Create Decentralized ID ")                                
                               
@@ -359,6 +415,7 @@ const Vault = () => {
                         console.log(err);
                         console.log("you are already uploaded..")
                     });        
+        }
 
     }
 
@@ -376,6 +433,9 @@ const Vault = () => {
     return (
        
     <section className="p-0 my-5">            
+    <ModalDLoading visible={getLoading} onClose={() => setLoading(false)}>
+        <FolowStepsLoading viewhistory={dis}/>
+    </ModalDLoading>
     <ModaldConnect visible={isOpen} onClose={() => setIsOpen(false)}>
         <FolowStepsAsset viewhistory={dis}/>
     </ModaldConnect>

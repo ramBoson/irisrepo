@@ -12,11 +12,18 @@ const Swap = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpens, setIsOpens] = useState(false);
     var[dis,setDis] = useState("");
+    const [user, setUser] = useState(null);
+    console.log("userprint",user)
     const [getresponse, setresponse] = useState([]);
+    console.log("getr",getresponse)
   useEffect(() => {
     const fetchPosts = async () => {      
-      const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`);
-      setresponse(res.data)      
+        axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(u) => {
+            setUser(u.data)
+            await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${u.data['profileURL']}`).then((response)=>{
+            setresponse(response.data)      
+            })            
+          })    
     };
     fetchPosts();
   }, []);
@@ -84,16 +91,16 @@ const Swap = () => {
                                         <tr>
                                             <th>Your Id</th>
                                             <th>Your Name</th>
-                                            <th>Your Number</th>
-                                            <th>Your Email</th>
+                                            <th>Your Citizenship</th>
+                                            {/* <th>Your Email</th> */}
                                         </tr>
                                     </thead>
                                     <tbody className="text-center">
                                         <tr>
-                                            <td>{getresponse['']}</td>
-                                            <td>{getresponse['profileName']}</td>
-                                            <td>{getresponse['accountType']}</td>
-                                            <td>{getresponse['accountType']}</td>
+                                            <td>{getresponse['assetId']}</td>
+                                            <td>{getresponse['firstName']}</td>
+                                            <td>{getresponse['citizenship']}</td>
+                                            {/* <td>{getresponse['accountType']}</td> */}
                                         </tr>
                                     </tbody>
                                 </Table>

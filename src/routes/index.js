@@ -86,13 +86,7 @@ let routes = [
 		name: 'Admin',
 		component: admin,
 		layout: 'main',
-	},
-	{
-		path: '/adminviewdb',
-		name: 'adminviewdb',
-		component: Adminviewdb,
-		layout: 'main',
-	},
+	},	
 	{
 		path: '/dashboardd',
 		name: 'dashboardd',
@@ -111,5 +105,11 @@ let routes = [
 		component: ApprovePage,
 		layout: 'main',
 	},		
+	{
+		path: '/adminviewdb',
+		name: 'adminviewdb',
+		component: Adminviewdb,
+		layout: 'main',
+	},
 ];
 export default routes;

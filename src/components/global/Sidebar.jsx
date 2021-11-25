@@ -27,7 +27,7 @@ const Sidebar = (props) => {
     useEffect(() => {
         window.addEventListener("resize", monitorNavbar)
         return () => {
-            window.removeEventListener("resize", monitorNavbar)
+        window.removeEventListener("resize", monitorNavbar)
         }
     })
     useEffect(()=>{

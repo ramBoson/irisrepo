@@ -3,6 +3,10 @@ import { useEffect } from "react";
 import axios from 'axios';
 import { Link,useLocation } from "react-router-dom";
 import styles from "./FolowStepList/FolowSteps.module.sass";
+import ModalDLoading from '../../ModalDLoading';
+import FolowStepsApprove from '../../FolowStepsApprove';
+
+
 
 const ApprovePage=()=> {  
   const location =useLocation();  
@@ -21,12 +25,22 @@ const ApprovePage=()=> {
   console.log("twitterName",location.state['twitterName'])
   console.log("profileURL",location.state['profileURL'])  
 
-  
+  const [getdone, setdone] = useState(false);
   const [getresponse, setresponse] = useState([]);
   console.log("getr",getresponse)
+  const [getresponse2, setresponse2] = useState([]);
+  console.log("getr2",getresponse2)
+  useEffect(() => {
+    const fetchPosts = async () => {      
+      const res = await axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${location.state['algoAddress']}`)
+      setresponse2(res.data)      
+    };
+    fetchPosts();
+  }, []);
+
   useEffect(() => {
     const fetchPosts = async () => {            
-      const kycplainget= await axios.get(`http://18.191.6.217:42101/irisapi/v1/kyc/${location.state['profileURL']}`)
+      const kycplainget= await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${location.state['profileURL']}`)
       //const res = await axios.get(`http://18.191.6.217:42101/irisapi/v1/users/${location.state['algoAddress']}`)                              
       setresponse((kycplainget.data['base64Image']))      
     };
@@ -54,11 +68,13 @@ const ApprovePage=()=> {
     }
     
     console.log("postsjson",posts)             
-    axios.post(`http://18.191.6.217:42101/irisapi/v1/users`,posts)
+    axios.post(`http://3.15.6.43:42101/irisapi/v1/users`,posts)
     .then(res => {
       console.log(res.data)
+      //setdone(true)
+     alert("approved")
+     window.location.reload(false)
 
-      alert("approved")
     //   axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
     //         .then(async(response) => {
     //             window.location.reload();
@@ -75,6 +91,9 @@ const ApprovePage=()=> {
       <div className="Home">
         <div className="lander">
           <h1>Admin Db page</h1>          
+    <ModalDLoading visible={getdone} onClose={() => setdone(false)}>
+        <FolowStepsApprove />
+    </ModalDLoading>
           <div className={styles.avatar}>
           <img src={getresponse} alt="Avatar" />                      
           </div>
@@ -88,7 +107,7 @@ const ApprovePage=()=> {
                         <th>Name</th>
                         <th>CREATION TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                         <th>ADDRESS</th>                        
-                        <th>IMAGE</th>
+                        {/* <th>IMAGE</th> */}
                         <th>ACCOUNT TYPE</th>                        
                         <th>STATUS</th>
                         <th>APPROVE</th>
@@ -97,12 +116,12 @@ const ApprovePage=()=> {
                 <tbody>                                    
                         <tr key={location.state['userKey']}>
                             <td>{location.state['userKey']}</td>                            
-                            <td>{location.state['algoAddress']}</td>
+                            <td>{location.state['profileName']}</td>
                             <td>{location.state['creationTime']}</td>
                             <td>{location.state['accountType']}</td>
-                            <td>{location.state['profileName'].slice(0,20)}....</td>                            
-                            <td>{location.state['twitterName']}</td>
+                            {/* <td>{location.state['profileName'].slice(0,20)}....</td>                             */}
                             <td>{location.state['profileURL']}</td>   
+                            <td>{getresponse2['twitterName']}</td>                            
                             <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall()}>Approve</td>                            
                         </tr>                    
                 </tbody>
