@@ -18,8 +18,12 @@ const FolowStepsList = ({ className,data,datas}) => {
   
   return (
     <div >
-      {/* <h1>{test}</h1> */}
-      <div ></div>
+<h4>Select Your Wallet Address</h4>
+
+<br></br>
+      <div >
+      
+      </div>
       <div >
 
       <div >
@@ -28,6 +32,7 @@ const FolowStepsList = ({ className,data,datas}) => {
               <Icon name="upload-file" size="24" />
             </div> */}
             <div >            
+            
                {data.map((x) => (
                     // <h6 style={{cursor:"pointer",color:bgcolor}} onClick={()=>boxClick()}>{x.address}</h6>))}               
                     <>

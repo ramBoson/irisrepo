@@ -95,7 +95,7 @@ class Dashboardduplicate extends Component {
         setAsset:"",
     }
     componentDidMount() {
-        document.getElementById("header-title").innerText = "DASHBOARD";        
+        document.getElementById("header-title").innerText = "IRIS DASHBOARD";        
               if(localStorage.getItem('wallet') === null || localStorage.getItem('wallet') === "" || localStorage.getItem('wallet') === undefined){  
                   alert("please connect your wallet")
               }

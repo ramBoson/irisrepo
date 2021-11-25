@@ -18,7 +18,7 @@ const FolowStepsLoading = ({ className,viewhistory}) => {
             <div className={styles.icon}>            
               {/* <Icon name="upload-file" size="24" /> */}
             </div>
-            <h4 style={{color:'#2a7cda'}}>Uploading...</h4>
+            <h4 style={{color:'#2a7cda'}}>Creating D-Id ... Please Wait ...</h4>
             <div className={styles.details}>
               <div className={styles.info}>{viewhistory}</div>
             </div>

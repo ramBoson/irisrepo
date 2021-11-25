@@ -90,16 +90,23 @@ const Swap = () => {
                                     <thead>
                                         <tr>
                                             <th>Your Id</th>
+                                            <td>{getresponse['assetId']}</td>
+                                            </tr>
+                                            <tr>
                                             <th>Your Name</th>
+                                            <td>{getresponse['firstName']}</td>
+                                            </tr>
+                                            <tr>
                                             <th>Your Citizenship</th>
+                                            <td>{getresponse['citizenship']}</td>
                                             {/* <th>Your Email</th> */}
                                         </tr>
                                     </thead>
                                     <tbody className="text-center">
                                         <tr>
-                                            <td>{getresponse['assetId']}</td>
-                                            <td>{getresponse['firstName']}</td>
-                                            <td>{getresponse['citizenship']}</td>
+                                           
+                                            
+                                            
                                             {/* <td>{getresponse['accountType']}</td> */}
                                         </tr>
                                     </tbody>

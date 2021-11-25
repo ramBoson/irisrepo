@@ -72,7 +72,8 @@ const ApprovePage=()=> {
     .then(res => {
       console.log(res.data)
       //setdone(true)
-     alert("approved")
+     alert("KYC Approved Successfully !")
+     //confirm("Press a button!");
      window.location.reload(false)
 
     //   axios.post('http://18.191.6.217:42101/irisapi/v1/kycPlain?',kycplainjson)
@@ -90,7 +91,7 @@ const ApprovePage=()=> {
     return (
       <div className="Home">
         <div className="lander">
-          <h1>Admin Db page</h1>          
+          <h3>Approve Kyc</h3>          
     <ModalDLoading visible={getdone} onClose={() => setdone(false)}>
         <FolowStepsApprove />
     </ModalDLoading>
@@ -103,26 +104,38 @@ const ApprovePage=()=> {
           <table className="table table-striped table-bordered">
                 <thead>
                     <tr>
-                      <th>USERKEY</th>
-                        <th>Name</th>
-                        <th>CREATION TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-                        <th>ADDRESS</th>                        
+                      <th>USERKEY</th><td>{location.state['userKey']}</td>                            
+                      </tr>
+                      <tr>
+                        <th>Name</th><td>{location.state['profileName']}</td>
+                        </tr>
+                          <tr>
+                        <th>CREATION TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><td>{location.state['creationTime']}</td>
+                        </tr>
+                        <tr>
+                        <th>ADDRESS</th><td>{location.state['accountType']}</td>
+                        </tr>
                         {/* <th>IMAGE</th> */}
-                        <th>ACCOUNT TYPE</th>                        
-                        <th>STATUS</th>
-                        <th>APPROVE</th>
+                        <tr>
+                        <th>ACCOUNT TYPE</th><td>{location.state['profileURL']}</td>   
+                        </tr>
+                        <tr>
+                        <th>STATUS</th><td>{getresponse2['twitterName']}</td> 
+                        </tr>
+                        <tr>                        
+                        <th>APPROVE</th><td style={{cursor:"pointer",styles:"bold",color:"#4a54f1"}} onClick={()=>dbupdatecall()}>Approve</td>                            
                     </tr>
                 </thead>
                 <tbody>                                    
                         <tr key={location.state['userKey']}>
-                            <td>{location.state['userKey']}</td>                            
-                            <td>{location.state['profileName']}</td>
-                            <td>{location.state['creationTime']}</td>
-                            <td>{location.state['accountType']}</td>
+                            
+                            
+                            
+
                             {/* <td>{location.state['profileName'].slice(0,20)}....</td>                             */}
-                            <td>{location.state['profileURL']}</td>   
-                            <td>{getresponse2['twitterName']}</td>                            
-                            <td style={{cursor:"pointer"}} onClick={()=>dbupdatecall()}>Approve</td>                            
+                            
+                            
+                            
                         </tr>                    
                 </tbody>
             </table>                    

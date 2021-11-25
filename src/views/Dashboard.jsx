@@ -268,14 +268,14 @@ class Dashboard extends Component {
         <input placeholder="Phone Number" type="tel" value={this.state.value} id="phonenumber" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"/>        
         <br></br><br></br>                              
         <label>Citizenship:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input placeholder="citizenship" type="text" value={this.state.value} id="citizenship"/>   
-        <br></br><br></br>                
-        <label>Country of Residence:&nbsp;&nbsp;</label>
-        <input placeholder="country of residence" type="text" value={this.state.value} id="cor"/>   
+        <input placeholder="citizenship" type="text" value={this.state.value} id="citizenship"/>           
         <br></br><br></br>                
         <label>Type of Proof:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input placeholder="type of proof" type="text" value={this.state.value} id="top"/>   
         <br></br><br></br>  
+        <label>Enter Proof Number:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+        <input placeholder="country of residence" type="text" value={this.state.value} id="cor"/>   
+        <br></br><br></br>                        
         <label>Select Image:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input type="file" name="tfile" id="fileid" onChange = {captureFile}/>
         <br></br><br></br>                        <br/>

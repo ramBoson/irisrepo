@@ -224,7 +224,6 @@ const Vault = () => {
           alert("you are already created D-ID")          
         }
         else{
-
         setLoading(true)
         let today = new Date();
         let dd = String(today.getDate()).padStart(2, '0');
@@ -237,7 +236,7 @@ const Vault = () => {
         const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
             pinata.testAuthentication().then((result) => {            
             console.log(result);  
-            let ge=posts['profileName'];
+            let ge=posts['accountType'];
             console.log("ipfsHash",posts['accountType']);
             console.log("ipfsname",posts['profileName']);            
                     const body = {
@@ -258,7 +257,7 @@ const Vault = () => {
                     pinata.pinJSONToIPFS(body, options).then(async(result) => {                        
                         console.log(result);
                         console.log("jsonresult")                      
-                        let fileCat = 'image'      
+        let fileCat = 'image'      
         let nftFileNameSplit = posts['profileName'].split('.')
         let fileExt = nftFileNameSplit[1];      
         let kvProperties = {
@@ -284,6 +283,7 @@ const Vault = () => {
         //sixth console      
         console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT prepared metadata: ', metadata);      
         await pinata.pinJSONToIPFS(metadata, options).then(async(result) => {
+        console.log("pinataresponse",result)
         let jsonIntegrity = convertIpfsCidV0ToByte32(posts['twitterName'])
         //console.log('Algorand NFT::ARC3::IPFS scenario 1: The NFT metadata JSON file pinned to IPFS via Pinata: ', resultMeta);        
                         //create asset here

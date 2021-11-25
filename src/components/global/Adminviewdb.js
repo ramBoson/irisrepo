@@ -61,7 +61,7 @@ const Adminviewdb=()=> {
     return (
       <div className="Home">
         <div className="lander">
-          <h1>Admin Db page</h1>          
+          <h3>Approve Kyc</h3>          
           {/* <button type="button" onClick={()=>makeAPICall()}>Retrive</button>       */}
           <table className="table table-striped table-bordered">
                 <thead>
