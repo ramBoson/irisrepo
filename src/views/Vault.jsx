@@ -20,6 +20,22 @@ import FolowStepsLoading from '../FolowStepsLoading';
 import config from '../configurl'
 
 const Vault = () => {
+  const [getcurrents, setcurrents] = useState(""); 
+  console.log("Currents",getcurrents) 
+  const [getdob, setdob] = useState(""); 
+  console.log("dob",getdob) 
+  const [getemail, setemail] = useState(""); 
+  console.log("getemail",getemail) 
+  const [getphonenumber, setphonenumber] = useState(""); 
+  console.log("getphonenumber",getphonenumber)   
+  const [getaddress, setaddress] = useState(""); 
+  console.log("getaddress",getaddress) 
+  const [getcitizenship, setcitizenship] = useState(""); 
+  console.log("getcitizenship",getcitizenship) 
+  const [getprooftype, setprooftype] = useState(""); 
+  console.log("getprooftype",getprooftype) 
+  const [getproofnumber, setproofnumber] = useState(""); 
+  console.log("getproofnumber",getproofnumber) 
   console.log("config",config)
   const [getmetadata,setmetadata] = useState(""); 
   console.log("getmetadata",getmetadata)
@@ -69,6 +85,15 @@ const Vault = () => {
                   console.log("Nullres",res)
                   await axios.get(`${config}/kyc/${res.data['profileURL']}`).then((response)=>{
                     console.log("ResponseCon",response.data['assetId'])
+                    console.log("ResponseCoR",response.data['countryOfResidence'])
+                    setcurrents(response.data['countryOfResidence'])
+                    setdob(response.data['dob'])
+                    setaddress(response.data['address'])
+                    setphonenumber(response.data['phoneNumber'])
+                    setemail(response.data['email'])
+                    setcitizenship(response.data['citizenship'])
+                    setprooftype(response.data['proofType'])
+                    //setproofnumber(response.data['citizenship'])                    
                     if(response.data['assetId'] === null || response.data['assetId'] === " " || response.data['assetId'] === undefined || response.data['assetId'] === "null"){
                       setcurrent(false)
                     }                    
@@ -86,6 +111,13 @@ const Vault = () => {
     let arc3MetadataJSON={
         "name": "",
         "description": "",
+        "address":"",
+        "email":"",      
+        "phonenumber":"",
+        "citizenship":"",
+        "prooftype":"",
+        "proofnumber":"",
+        "algoaddress":"",
         "image": "ipfs://",
         "image_integrity": "sha256-",
         "image_mimetype": "image/png",
@@ -279,7 +311,14 @@ const Vault = () => {
                         metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['accountType']}`;
                         metadata.properties.file_url_integrity = `${integrity.base64}`;
                         metadata.name = `${posts['profileName']}@arc3`;
-                        metadata.description = posts['profileName'];
+                        metadata.description = getdob;
+                        metadata.address = getaddress;
+                        metadata.email = getemail;
+                        metadata.phonenumber = getphonenumber;
+                        metadata.citizenship = getcitizenship;
+                        metadata.prooftype = getprooftype;
+                        metadata.proofnumber = getcurrents;
+                        metadata.algoaddress = localStorage.getItem('wallet');                        
                         metadata.image = `ipfs://${posts['accountType']}`;
                         metadata.image_integrity = `${integrity.base64}`;;
                         metadata.image_mimetype = `${fileCat}/${fileExt}`;
@@ -301,7 +340,10 @@ const Vault = () => {
                               'X-API-key' : 'SVsJKi8vBM1RwK1HEuwhU20hYmwFJelk8bagKPin',
                         }    
                         let algodClient = new algosdk.Algodv2(token, server, port);
-                        var encrypted = CryptoJS.AES.encrypt(getmetadata,(posts['profileName'].slice(0, 2)));
+                        //setmetadata(`https://gateway.pinata.cloud/ipfs/"+${result['IpfsHash']}`)
+                        console.log("aftermetadata",getmetadata)
+                        let encrypted = CryptoJS.AES.encrypt(`https://gateway.pinata.cloud/ipfs/"+${result['IpfsHash']}`,getcurrents);
+                        console.log("encry",encrypted)
                         //U2FsdGVkX18ZUVvShFSES21qHsQEqZXMxQ9zgHy+bu0=                      
                     AlgoSigner.connect()
                       .then((d) => {
