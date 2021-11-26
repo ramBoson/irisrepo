@@ -15,6 +15,8 @@ import FolowStepsEnterAll from '../FolowStepsEnterAll';
 import FolowStepsMovedid from '../FolowStepsMovedid';
 import ModalDLoading from '../ModalDLoading';
 import FolowStepsLoading from '../FolowStepsLoading';
+import FolowStepsLoadingFirst from '../FolowStepsLoadingFirst';
+import config from '../configurl'
 
 class Dashboard extends Component {
     state={
@@ -56,7 +58,7 @@ class Dashboard extends Component {
                   alert("please connect your wallet")
               }
               else{                  
-                  axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then((e)=>{
+                  axios.get(`${config}/users/${localStorage.getItem('wallet')}`).then((e)=>{
                     if(e.data['algoAddress'] === localStorage.getItem('wallet'))
                     this.setState({ setCurrent:true});
                     else
@@ -181,14 +183,14 @@ class Dashboard extends Component {
         bodyFormData.append('files',this.state.selectedFiles);          
                 
 
-         const kycplainjson={	
-          "createdDate": today,
-          "firstName": document.getElementById("name").value,
-          "lastName": document.getElementById("dob").value,
-          "selfiePath": document.getElementById("fileid").value,
-          "proofType": document.getElementById("top").value,
-          "algoAddress":localStorage.getItem("wallet"),
-          "kycStatus": "create",
+        const kycplainjson={	          
+        "createdDate": today,
+        "firstName": document.getElementById("name").value,
+        "lastName": document.getElementById("dob").value,
+        "selfiePath": document.getElementById("fileid").value,
+        "proofType": document.getElementById("top").value,
+        "algoAddress": localStorage.getItem("wallet"),
+        "kycStatus": "create",
           "reviewedBy": "pending",
           "approvedBy": "approved",
           "submittedDate": today,
@@ -198,21 +200,44 @@ class Dashboard extends Component {
           "countryOfResidence":document.getElementById("cor").value,
           "citizenship":document.getElementById("citizenship").value,
           "base64Image":this.state.setImg,
-          "assetId":"null"
-        };
+          "assetId":"null",
+          "address":document.getElementById("address").value,
+          "dob":document.getElementById("dob").value,
+          "email":document.getElementById("email").value,
+          "phoneNumber":document.getElementById("phonenumber").value,
+      }
+        //  const kycplainjson={	
+        //   "createdDate": today,
+        //   "firstName": document.getElementById("name").value,
+        //   "lastName": document.getElementById("dob").value,
+        //   "selfiePath": document.getElementById("fileid").value,
+        //   "proofType": document.getElementById("top").value,
+        //   "algoAddress":localStorage.getItem("wallet"),
+        //   "kycStatus": "create",
+        //   "reviewedBy": "pending",
+        //   "approvedBy": "approved",
+        //   "submittedDate": today,
+        //   "reviewedDate": "no",
+        //   "approvedDate": "no",
+        //   "identity":this.state.setIpfsHash,
+        //   "countryOfResidence":document.getElementById("cor").value,
+        //   "citizenship":document.getElementById("citizenship").value,
+        //   "base64Image":this.state.setImg,
+        //   "assetId":"null"
+        // };
 
         
         console.log("formDatafinal2",bodyFormData)
         console.log("formDatafinal3",kycplainjson)
         let userurl="";
-        axios.post('http://3.15.6.43:42101/irisapi/v1/kycPlain?',kycplainjson)
+        axios.post(`${config}/kycPlain?`,kycplainjson)
             .then(async(response) => {
               //console.log("uploadedinitial",response.data)
               console.log("uploadedinitial",response.data['kycId'])  
               userurl=response.data['kycId'];
               //console.log("imageref",this.state.selectedFile)
               //console.log(response);
-            await axios.post(`http://3.15.6.43:42101/irisapi/v1/kycImage/${response.data['kycId']}`,bodyFormData)
+            await axios.post(`${config}/kycImage/${response.data['kycId']}`,bodyFormData)
             .then(async(responseimage) => {
               console.log("uploadedimageonly",responseimage)   
               const userjsonkey= {            
@@ -224,7 +249,7 @@ class Dashboard extends Component {
                 "profileURL": userurl,
               }   
               console.log("formDatafinal1",userjsonkey)
-              await axios.post('http://3.15.6.43:42101/irisapi/v1/users',userjsonkey)
+              await axios.post(`${config}/users`,userjsonkey)
             .then(async(responseuser) => {
               console.log("uploadeduser",responseuser)                        
               this.setState({setLoading:false})   
@@ -298,7 +323,7 @@ class Dashboard extends Component {
         <FolowStepsMovedid />
     </ModaldConnect>
     <ModalDLoading visible={this.state.setLoading} onClose={() => this.setState({setLoading:false})}>
-        <FolowStepsLoading />
+    <FolowStepsLoadingFirst/>
     </ModalDLoading>
         </>        
         );        

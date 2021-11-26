@@ -39,6 +39,7 @@ import Action2 from '../assets/img/action-2-white.png';
 import Action3 from '../assets/img/action-3-white.png';
 import Action4 from '../assets/img/action-4-white.png';
 import Action5 from '../assets/img/action-5-white.png';
+import config from '../configurl'
 class Dashboardduplicate extends Component {
     state={
         activeTab: "ViewPool",
@@ -100,13 +101,13 @@ class Dashboardduplicate extends Component {
                   alert("please connect your wallet")
               }
               else{                  
-                  axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(e)=>{
+                  axios.get(`${config}/users/${localStorage.getItem('wallet')}`).then(async(e)=>{
                     if(e.data['algoAddress'] === localStorage.getItem('wallet'))            
                     {
                         this.setState({ setCurrent:"first"});
                         if(e.data['twitterName'] === "Approved"){
                             this.setState({ setApprove:"Approved"});
-                            await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${e.data['profileURL']}`).then((response)=>{
+                            await axios.get(`${config}/kyc/${e.data['profileURL']}`).then((response)=>{
                                 console.log("ResponseCond",response.data['assetId'])
                                 if(response.data['assetId'] === null || response.data['assetId'] === " " || response.data['assetId'] === undefined || response.data['assetId'] === "null"){
                                     this.setState({setAsset:""})      

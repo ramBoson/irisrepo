@@ -17,8 +17,10 @@ import FolowStepsAsset from "../FolowStepsAsset";
 import ModaldConnect from "../ModalDConnect";
 import ModalDLoading from '../ModalDLoading';
 import FolowStepsLoading from '../FolowStepsLoading';
+import config from '../configurl'
 
 const Vault = () => {
+  console.log("config",config)
   const [getmetadata,setmetadata] = useState(""); 
   console.log("getmetadata",getmetadata)
   const [getcurrent, setcurrent] = useState(false); 
@@ -39,9 +41,9 @@ const Vault = () => {
   //   fetchPosts();
   // }, []);
   useEffect(() => {
-    axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(u) => {
+    axios.get(`${config}/users/${localStorage.getItem('wallet')}`).then(async(u) => {
       setUser(u.data)
-      await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${u.data['profileURL']}`).then((response)=>{
+      await axios.get(`${config}/kyc/${u.data['profileURL']}`).then((response)=>{
       setresponse(response.data)      
       })            
     })    
@@ -62,10 +64,10 @@ const Vault = () => {
                 alert("please connect your wallet")
             }
             else{                
-                await axios.get(`http://3.15.6.43:42101/irisapi/v1/users/${localStorage.getItem('wallet')}`).then(async(res)=>{
+                await axios.get(`${config}/users/${localStorage.getItem('wallet')}`).then(async(res)=>{
                   setPosts(res.data); 
                   console.log("Nullres",res)
-                  await axios.get(`http://3.15.6.43:42101/irisapi/v1/kyc/${res.data['profileURL']}`).then((response)=>{
+                  await axios.get(`${config}/kyc/${res.data['profileURL']}`).then((response)=>{
                     console.log("ResponseCon",response.data['assetId'])
                     if(response.data['assetId'] === null || response.data['assetId'] === " " || response.data['assetId'] === undefined || response.data['assetId'] === "null"){
                       setcurrent(false)
@@ -170,7 +172,7 @@ const Vault = () => {
     }
 
     const updatedb=async(today,assetid)=>{
-      sleep(10000).then(async()=>{
+      sleep(20000).then(async()=>{
         let kycplainjsonupdate={	
           "kycKey":user['profileURL'],
           "createdDate": today,
@@ -189,23 +191,25 @@ const Vault = () => {
           "countryOfResidence":getresponse['countryOfResidence'],
           "citizenship":getresponse['citizenship'],
           "base64Image":getresponse['base64Image'],
-          "assetId": localStorage.getItem("Assetid")
+          "assetId": localStorage.getItem('Assetid'),
+          "address":getresponse['address'],
+          "dob":getresponse['dob'],
+          "email":getresponse['email'],
+          "phoneNumber":getresponse['phoneNumber'],
         };
         console.log("afterjsonchange",kycplainjsonupdate)
-        sleep(2000).then(async()=>{
-          await axios.post('http://3.15.6.43:42101/irisapi/v1/kycPlain?',kycplainjsonupdate)
+        sleep(4000).then(async()=>{
+        await axios.post(`${config}/kycPlain?`,kycplainjsonupdate)
         .then(async(response) => {
-          console.log("configjson",response)
+          console.log("configjson",response)          
           setLoading(false)
-          setIsOpenAsset(true)
+          setIsOpenAsset(true)          
         })
         .catch(function (response) {
           //handle error
           console.log(response);
         });        
-
-       })
-        
+       })        
      })
     }
       const algosdk = require('algosdk');
@@ -298,8 +302,7 @@ const Vault = () => {
                         }    
                         let algodClient = new algosdk.Algodv2(token, server, port);
                         var encrypted = CryptoJS.AES.encrypt(getmetadata,(posts['profileName'].slice(0, 2)));
-                        //U2FsdGVkX18ZUVvShFSES21qHsQEqZXMxQ9zgHy+bu0=
-                      
+                        //U2FsdGVkX18ZUVvShFSES21qHsQEqZXMxQ9zgHy+bu0=                      
                     AlgoSigner.connect()
                       .then((d) => {
                       console.log("tested1")
@@ -403,22 +406,27 @@ const Vault = () => {
         //handle error here
         console.log(err);
         console.log("you are already uploaded catch 1..")
+        setLoading(false)
+        alert("please try again")
     });  
         
                       }).catch((err) => {
                           //handle error here
                           console.log(err);
                           console.log("you are already uploaded catch 1..")
+                          setLoading(false)
+                          alert("please try again")
                       });    
                     }).catch((err) => {
                         //handle error here
                         console.log(err);
                         console.log("you are already uploaded..")
+                        setLoading(false)
+                        alert("please try again")
                     });        
         }
 
     }
-
 
       const pending=()=>{
         //setIsOpenAsset(true)
