@@ -147,8 +147,8 @@ class Dashboardduplicate extends Component {
                                 </div>
                                 <div className="step-text">
                                     <h4 class="title">CREATE USERS</h4>
-                                    <p class="date">Nov 2nd 2021</p>
-                                    <p class="time">20:30 </p>
+                                    {/* <p class="date">Nov 2nd 2021</p>
+                                    <p class="time">20:30 </p> */}
                                 </div>
                             </div>
                         ):(
@@ -160,8 +160,8 @@ class Dashboardduplicate extends Component {
                                 </div>
                                 <div className="step-text">
                                     <h4 class="title">CREATE USERS</h4>
-                                    <p class="date">Nov 2nd 2021</p>
-                                    <p class="time">20:30 </p>
+                                    {/* <p class="date">Nov 2nd 2021</p>
+                                    <p class="time">20:30 </p> */}
                                 </div>
                             </div>
                         )}                            
@@ -174,8 +174,8 @@ class Dashboardduplicate extends Component {
                                 </div>
                                 <div className="step-text">
                                     <h4 class="title">APPROVED</h4>
-                                    <p class="date">Nov 2nd 2021</p>
-                                    <p class="time">20:30 </p>
+                                    {/* <p class="date">Nov 2nd 2021</p>
+                                    <p class="time">20:30 </p> */}
                                 </div>
                             </div>
                             ):(
@@ -187,8 +187,8 @@ class Dashboardduplicate extends Component {
                                 </div>
                                 <div className="step-text">
                                     <h4 class="title">APPROVED</h4>
-                                    <p class="date">Nov 2nd 2021</p>
-                                    <p class="time">20:30 </p>
+                                    {/* <p class="date">Nov 2nd 2021</p>
+                                    <p class="time">20:30 </p> */}
                                 </div>
                             </div>
                             )}
@@ -203,8 +203,8 @@ class Dashboardduplicate extends Component {
                               </div>
                               <div className="step-text">
                               <h4 class="title">CREATE D-ID</h4>
-                              <p class="date">Nov 2nd 2021</p>
-                              <p class="time">20:30 </p>
+                              {/* <p class="date">Nov 2nd 2021</p>
+                              <p class="time">20:30 </p> */}
                               </div>
                              </div>
                              <div className="step" style={{color:"#2a7cda"}}>
@@ -215,8 +215,8 @@ class Dashboardduplicate extends Component {
                              </div>
                              <div className="step-text">
                                  <h4 class="title">COMPLETED</h4>
-                                 <p class="date">Nov 2nd 2021</p>
-                                 <p class="time">20:30 </p>
+                                 {/* <p class="date">Nov 2nd 2021</p>
+                                 <p class="time">20:30 </p> */}
                              </div>
                          </div>
                          </>
@@ -230,8 +230,8 @@ class Dashboardduplicate extends Component {
                                 </div>
                                 <div className="step-text">
                                     <h4 class="title">CREATE D-ID</h4>
-                                    <p class="date">Nov 2nd 2021</p>
-                                    <p class="time">20:30 </p>
+                                    {/* <p class="date">Nov 2nd 2021</p>
+                                    <p class="time">20:30 </p> */}
                                 </div>
                             </div>
                             <div className="step" style={{color:"rgba(6, 10, 13, 0.5)"}}>
@@ -242,8 +242,8 @@ class Dashboardduplicate extends Component {
                             </div>
                             <div className="step-text">
                                 <h4 class="title">COMPLETED</h4>
-                                <p class="date">Nov 2nd 2021</p>
-                                <p class="time">20:30 </p>
+                                {/* <p class="date">Nov 2nd 2021</p>
+                                <p class="time">20:30 </p> */}
                             </div>
                         </div>
                         </>
