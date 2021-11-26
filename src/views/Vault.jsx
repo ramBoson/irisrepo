@@ -65,8 +65,8 @@ const Vault = () => {
     })    
   }, []);
   
-    const pinataApiKey = "88348e7ce84879e143e1";
-    const pinataApiSecret = "e4e8071ff66386726f9fe1aebf2d3235a9f88ceb4468d4be069591eb78d4bf6f";
+    const pinataApiKey = "221cfff25de18e88d3d0";
+    const pinataApiSecret = "ddffffed103d82a6296a378c80ddd2b4280b0d8a51e6922122fd3817accb45ba";
     const pinataSDK = require('@pinata/sdk');
     const pinata = pinataSDK(pinataApiKey, pinataApiSecret);
     const nftWorkspacePath = __dirname + '/workspace';
@@ -266,8 +266,8 @@ const Vault = () => {
         let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
         let yyyy = today.getFullYear();
         today = mm + '/' + dd + '/' + yyyy;                                                                 
-        let pinataApiKey='88348e7ce84879e143e1';
-        let pinataSecretApiKey='e4e8071ff66386726f9fe1aebf2d3235a9f88ceb4468d4be069591eb78d4bf6f';
+        let pinataApiKey='221cfff25de18e88d3d0';
+        let pinataSecretApiKey='ddffffed103d82a6296a378c80ddd2b4280b0d8a51e6922122fd3817accb45ba';
         const pinataSDK = require('@pinata/sdk');
         const pinata = pinataSDK(pinataApiKey, pinataSecretApiKey);
             pinata.testAuthentication().then((result) => {            
