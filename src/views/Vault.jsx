@@ -291,8 +291,8 @@ const Vault = () => {
                         }
                     };
                     pinata.pinJSONToIPFS(body, options).then(async(result) => {                        
-                        console.log(result);
-                        console.log("jsonresult")                      
+                        console.log("pinatajsonresult",result);
+                        console.log("jsonresult")                   
         let fileCat = 'image'      
         let nftFileNameSplit = posts['profileName'].split('.')
         let fileExt = nftFileNameSplit[1];      
@@ -364,11 +364,11 @@ const Vault = () => {
                         const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    
                           from: localStorage.getItem("wallet"),
                           assetName: posts['profileName'],
-                          unitName: "DI",
+                          unitName: "DId",
                           total: 1,
                           decimals: 0,
                           note: AlgoSigner.encoding.stringToByteArray(encrypted.toString()),
-                          assetURL:"https://cifi-mvp-iris.vercel.app/",
+                          // assetURL:"https://cifi-mvp-iris.vercel.app/",
                           manager:localStorage.getItem("wallet"),
                           reserve:localStorage.getItem("wallet"),
                           freeze: localStorage.getItem("wallet"),
