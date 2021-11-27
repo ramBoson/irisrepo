@@ -110,7 +110,7 @@ const Vault = () => {
 
     let arc3MetadataJSON={
         "name": "",
-        "description": "",
+        "dob": "",
         "address":"",
         "email":"",      
         "phonenumber":"",
@@ -276,7 +276,7 @@ const Vault = () => {
             console.log("ipfsHash",posts['accountType']);
             console.log("ipfsname",posts['profileName']);            
                     const body = {
-                        message: ge
+                        ipfshashurl : ge
                     };
                     const options = {
                         pinataMetadata: {
@@ -311,7 +311,7 @@ const Vault = () => {
                         metadata.properties.file_url = `https://ipfs.io/ipfs/${posts['accountType']}`;
                         metadata.properties.file_url_integrity = `${integrity.base64}`;
                         metadata.name = `${posts['profileName']}@arc3`;
-                        metadata.description = getdob;
+                        metadata.dob = getdob;
                         metadata.address = getaddress;
                         metadata.email = getemail;
                         metadata.phonenumber = getphonenumber;
@@ -348,7 +348,7 @@ const Vault = () => {
                     AlgoSigner.connect()//connect algosigner
                       .then((d) => {
                       console.log("tested1")
-                      algodClient.healthCheck().do()//?
+                      algodClient.healthCheck().do()//sdk setup
                       .then(d => {     
                         AlgoSigner.accounts({//get account
                           ledger: 'TestNet'
@@ -361,7 +361,7 @@ const Vault = () => {
                       .then((d) => {
                         let txParamsJS = d;
                         console.log("txparamsJS",txParamsJS)
-                        const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    //asset create 
+                          const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    //asset create 
                           from: localStorage.getItem("wallet"),
                           assetName: posts['profileName'],
                           unitName: "DId",
@@ -379,7 +379,7 @@ const Vault = () => {
                       
                         console.log("txnprint",txn)
                         // Use the AlgoSigner encoding library to make the transactions base64
-                        const txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());                      
+                        const txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());    //converted
                         AlgoSigner.signTxn([{txn: txn_b64}]) //sign -txid and blob
                         .then((d) => {
                           console.log("signTx",d)

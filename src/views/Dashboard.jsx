@@ -8,8 +8,6 @@ import ModaldMove from "../ModalDMove";
 import FolowStepsdMove from "../FolowStepsdMove";
 import Compress from "react-image-file-resizer";
 import ipfs from "./ipfs";
-import fs from 'fs'
-import FolowStepsAsset from "../FolowStepsAsset";
 import ModaldConnect from "../ModalDConnect";
 import FolowStepsEnterAll from '../FolowStepsEnterAll';
 import FolowStepsMovedid from '../FolowStepsMovedid';
