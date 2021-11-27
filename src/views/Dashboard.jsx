@@ -113,9 +113,9 @@ class Dashboard extends Component {
         console.log("buff",buffer);
         this.setState({setIpfsHash:ipfsHash[0].hash});
         console.log(ipfsHash[0].hash)
-        const CID = require('cids')
-        var cid = new CID(ipfsHash[0].hash)        
-        console.log("cid",cid.toV1().toBaseEncodedString('base32'));
+        // const CID = require('cids')
+        // var cid = new CID(ipfsHash[0].hash)        
+        // console.log("cid",cid.toV1().toBaseEncodedString('base32'));
         this.setState({Buttonopen:true}) 
     })        
     };
@@ -206,26 +206,6 @@ class Dashboard extends Component {
           "email":document.getElementById("email").value,
           "phoneNumber":document.getElementById("phonenumber").value,
       }
-        //  const kycplainjson={	
-        //   "createdDate": today,
-        //   "firstName": document.getElementById("name").value,
-        //   "lastName": document.getElementById("dob").value,
-        //   "selfiePath": document.getElementById("fileid").value,
-        //   "proofType": document.getElementById("top").value,
-        //   "algoAddress":localStorage.getItem("wallet"),
-        //   "kycStatus": "create",
-        //   "reviewedBy": "pending",
-        //   "approvedBy": "approved",
-        //   "submittedDate": today,
-        //   "reviewedDate": "no",
-        //   "approvedDate": "no",
-        //   "identity":this.state.setIpfsHash,
-        //   "countryOfResidence":document.getElementById("cor").value,
-        //   "citizenship":document.getElementById("citizenship").value,
-        //   "base64Image":this.state.setImg,
-        //   "assetId":"null"
-        // };
-
         
         console.log("formDatafinal2",bodyFormData)
         console.log("formDatafinal3",kycplainjson)
