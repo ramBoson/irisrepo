@@ -204,7 +204,7 @@ const Vault = () => {
     }
 
     const updatedb=async(today,assetid)=>{
-      sleep(8000).then(async()=>{
+      sleep(2000).then(async()=>{
         let kycplainjsonupdate={	
           "kycKey":user['profileURL'],
           "createdDate": today,
