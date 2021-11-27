@@ -345,23 +345,23 @@ const Vault = () => {
                         let encrypted = CryptoJS.AES.encrypt(`https://gateway.pinata.cloud/ipfs/"+${result['IpfsHash']}`,getcurrents);
                         console.log("encry",encrypted)
                         //U2FsdGVkX18ZUVvShFSES21qHsQEqZXMxQ9zgHy+bu0=                      
-                    AlgoSigner.connect()
+                    AlgoSigner.connect()//connect algosigner
                       .then((d) => {
                       console.log("tested1")
-                      algodClient.healthCheck().do()
+                      algodClient.healthCheck().do()//?
                       .then(d => {     
-                        AlgoSigner.accounts({
+                        AlgoSigner.accounts({//get account
                           ledger: 'TestNet'
                         })
                         .then((d) => {
                           console.log("tested2",d)
                           accounts = d;
                           console.log("algoacc",localStorage.getItem("wallet"))
-                          algodClient.getTransactionParams().do()
+                          algodClient.getTransactionParams().do()//params purestake genesis hash / genesis id like chain acc 
                       .then((d) => {
                         let txParamsJS = d;
                         console.log("txparamsJS",txParamsJS)
-                        const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    
+                        const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({    //asset create 
                           from: localStorage.getItem("wallet"),
                           assetName: posts['profileName'],
                           unitName: "DId",
@@ -379,23 +379,21 @@ const Vault = () => {
                       
                         console.log("txnprint",txn)
                         // Use the AlgoSigner encoding library to make the transactions base64
-                        const txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());
-                        
-                        AlgoSigner.signTxn([{txn: txn_b64}])
+                        const txn_b64 = AlgoSigner.encoding.msgpackToBase64(txn.toByte());                      
+                        AlgoSigner.signTxn([{txn: txn_b64}]) //sign -txid and blob
                         .then((d) => {
                           console.log("signTx",d)
                           let signedTxs = d;
                           let signCodeElem = JSON.stringify(d, null, 2);
-                          console.log("signcoderElem",signCodeElem)
-                      
-                          AlgoSigner.send({
+                          console.log("signcoderElem",signCodeElem)                      
+                          AlgoSigner.send({ //send blob verify and get tranfer id
                             ledger: 'TestNet',
                             tx: signedTxs[0].blob
                           })
                           .then((d) => {
                             tx = d;
                             console.log("txidprint",tx.txId)                            
-                            AlgoSigner.algod({
+                            AlgoSigner.algod({ // round confirmation ?
                               ledger: 'TestNet',
                               path: '/v2/transactions/pending/' + tx.txId
                             })

@@ -1,8 +1,6 @@
 /* global AlgoSigner */
 import { Container, Button } from "reactstrap"
-import web3 from '../../web3';
 import React, { useState,useEffect } from "react";
-import Popup from "../../Popup";
 import Modald from "../../ModalD";
 import FolowStepsd from "../../FolowStepsd";
 import ModalList from "../../ModalList";

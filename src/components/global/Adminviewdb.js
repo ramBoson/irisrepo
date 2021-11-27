@@ -2,10 +2,6 @@ import React,{ useState } from 'react'
 import { useEffect } from "react";
 import axios from 'axios';
 import { Container } from 'reactstrap';
-import Bar from '../smartyield/Bar';
-import Markets from '../smartyield/Markets';
-import Portfolio from '../smartyield/Portfolio';
-import Pools from '../smartyield/Pools';
 import { Link } from "react-router-dom";
 import styles from "./FolowStepList/FolowSteps.module.sass";
 import config from '../../configurl'
