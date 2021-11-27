@@ -277,7 +277,7 @@ class Dashboard extends Component {
         <input placeholder="type of proof" type="text" value={this.state.value} id="top"/>   
         <br></br><br></br>  
         <label>Enter Proof Number:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-        <input placeholder="country of residence" type="text" value={this.state.value} id="cor"/>   
+        <input placeholder="proof number" type="text" value={this.state.value} id="cor"/>   
         <br></br><br></br>                        
         <label>Select Image:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
         <input type="file" name="tfile" id="fileid" onChange = {captureFile}/>

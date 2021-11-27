@@ -204,7 +204,7 @@ const Vault = () => {
     }
 
     const updatedb=async(today,assetid)=>{
-      sleep(20000).then(async()=>{
+      sleep(8000).then(async()=>{
         let kycplainjsonupdate={	
           "kycKey":user['profileURL'],
           "createdDate": today,
@@ -230,7 +230,7 @@ const Vault = () => {
           "phoneNumber":getresponse['phoneNumber'],
         };
         console.log("afterjsonchange",kycplainjsonupdate)
-        sleep(4000).then(async()=>{
+        sleep(1000).then(async()=>{
         await axios.post(`${config}/kycPlain?`,kycplainjsonupdate)
         .then(async(response) => {
           console.log("configjson",response)          
